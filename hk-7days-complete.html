@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hong Kong 7-Day Trip - BIGBANG Concert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+            color: #1a202c;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a365d;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.05em;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f7fafc;
+            border-bottom: 1px solid #cbd5e0;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
+        .nav-tabs button {
+            flex: 1;
+            min-width: 100px;
+            padding: 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #4a5568;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tabs button:hover {
+            background: #edf2f7;
+            color: #2c5282;
+        }
+
+        .nav-tabs button.active {
+            background: white;
+            color: #2c5282;
+            border-bottom-color: #2c5282;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .place-card {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 280px;
+            background: #cbd5e0;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2d3748;
+            font-size: 2.5em;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #cbd5e0;
+            padding-bottom: 15px;
+        }
+
+        .card-header h3 {
+            color: #1a365d;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .price-badge {
+            background: #2c5282;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-left: 3px solid #2c5282;
+            border-radius: 4px;
+        }
+
+        .info-item strong {
+            color: #1a365d;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .info-item p {
+            color: #4a5568;
+            margin: 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .description {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            line-height: 1.7;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .features {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .features h4 {
+            color: #1a365d;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .features li {
+            color: #4a5568;
+            margin: 8px 0;
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .features li:before {
+            content: "✓ ";
+            color: #2c5282;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .link-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .link-button {
+            display: inline-block;
+            background: #2c5282;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            border: none;
+            cursor: pointer;
+        }
+
+        .link-button:hover {
+            background: #1a365d;
+            text-decoration: none;
+        }
+
+        .section-title {
+            color: #1a365d;
+            font-size: 2em;
+            margin: 30px 0 20px 0;
+            border-bottom: 2px solid #2c5282;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subsection-title {
+            color: #1a365d;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+            border-left: 3px solid #2c5282;
+            padding-left: 15px;
+            font-weight: 600;
+        }
+
+        .day-card {
+            background: #f7fafc;
+            border-left: 4px solid #2c5282;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #cbd5e0;
+            padding-bottom: 15px;
+        }
+
+        .day-number {
+            background: #2c5282;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .time-item {
+            background: white;
+            padding: 15px;
+            margin: 12px 0;
+            border-left: 3px solid #2c5282;
+            border-radius: 4px;
+            line-height: 1.6;
+            border: 1px solid #e2e8f0;
+        }
+
+        .time-item strong {
+            color: #1a365d;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .budget-table td {
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .budget-table tr:nth-child(odd) {
+            background: #f7fafc;
+        }
+
+        .budget-table tr:first-child {
+            background: #2c5282;
+            color: white;
+            font-weight: 600;
+        }
+
+        .budget-table tr:last-child {
+            background: #2c5282;
+            color: white;
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+
+        .budget-total {
+            background: #1a365d;
+            color: white;
+            padding: 30px;
+            border-radius: 6px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid #0f2847;
+        }
+
+        .budget-total h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        .budget-total .amount {
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            border-left: 3px solid #f39c12;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            color: #4a5568;
+            border-right: 1px solid #f0e6d2;
+            border-top: 1px solid #f0e6d2;
+            border-bottom: 1px solid #f0e6d2;
+        }
+
+        .rating {
+            color: #d68910;
+            font-size: 1.05em;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+        }
+
+        .info-box h4 {
+            color: #1a365d;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .info-box ul {
+            list-style: none;
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .info-box li:before {
+            content: "→ ";
+            color: #2c5282;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .link-buttons {
+                flex-direction: column;
+            }
+
+            .link-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hong Kong - BIGBANG Concert Trip</h1>
+            <p>November 12-18, 2026 | 7 Days Complete Experience</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-btn active" data-tab="itinerary">Itinerary</button>
+            <button class="nav-btn" data-tab="hotels">Hotels</button>
+            <button class="nav-btn" data-tab="restaurants">Restaurants & Cafes</button>
+            <button class="nav-btn" data-tab="attractions">Attractions & Galleries</button>
+            <button class="nav-btn" data-tab="budget">Budget</button>
+        </div>
+
+        <div class="content">
+
+            <!-- ITINERARY -->
+            <div id="itinerary" class="tab-content active">
+                <h2 class="section-title">7-Day Complete Schedule</h2>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 1</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 12, 2026 - Arrival & Settle</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>06:45</strong> - Depart UBN (Ulaanbaatar)
+                    </div>
+                    <div class="time-item">
+                        <strong>11:25</strong> - Arrive Hong Kong International Airport
+                    </div>
+                    <div class="time-item">
+                        <strong>12:30</strong> - Airport Express to Tsim Sha Tsui (30,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>14:00</strong> - Check-in at Kowloon Hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>16:00</strong> - Rest & explore Tsim Sha Tsui area
+                    </div>
+                    <div class="time-item">
+                        <strong>19:00</strong> - Dinner at local restaurant (35,000 MNT)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 2</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 13, 2026 - BIGBANG Concert Day</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>08:00</strong> - Breakfast at hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>10:00</strong> - Visit Peak Tram & Victoria Peak (90,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>12:30</strong> - Lunch at peak café (40,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>14:00</strong> - Return to hotel & rest
+                    </div>
+                    <div class="time-item">
+                        <strong>18:00</strong> - Dinner at fine dining restaurant (60,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>19:00-22:30</strong> - BIGBANG CONCERT at Kai Tak Stadium (Premium Seating)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 3</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 14, 2026 - Art & Culture</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>08:00</strong> - Breakfast at hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>10:00</strong> - Visit M+ Museum (Art & Design) (50,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>12:30</strong> - Lunch at Museum café (35,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>14:30</strong> - Visit Hong Kong Museum of Art (30,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>17:00</strong> - Explore Central District galleries
+                    </div>
+                    <div class="time-item">
+                        <strong>19:00</strong> - Dinner at Central restaurant (50,000 MNT)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 4</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 15, 2026 - Temples & Markets</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>08:00</strong> - Breakfast at hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>09:30</strong> - Visit Wong Tai Sin Temple (Free)
+                    </div>
+                    <div class="time-item">
+                        <strong>11:30</strong> - Explore Jade Market (45 min walk or MTR)
+                    </div>
+                    <div class="time-item">
+                        <strong>13:00</strong> - Lunch at market area (30,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>15:00</strong> - Visit Man Mo Temple & Sheung Wan (Free)
+                    </div>
+                    <div class="time-item">
+                        <strong>17:30</strong> - Explore Soho district bars & cafés
+                    </div>
+                    <div class="time-item">
+                        <strong>19:30</strong> - Dinner in Soho (45,000 MNT)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 5</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 16, 2026 - Harbour & Islands</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>08:00</strong> - Breakfast at hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>09:30</strong> - Star Ferry to Wan Chai & explore
+                    </div>
+                    <div class="time-item">
+                        <strong>11:00</strong> - Wan Chai Heritage tour (40,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>13:00</strong> - Lunch at Wan Chai café (35,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>14:30</strong> - Visit Causeway Bay shopping & museums
+                    </div>
+                    <div class="time-item">
+                        <strong>18:00</strong> - Star Ferry sunset cruise (35,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>19:30</strong> - Dinner with harbour view (55,000 MNT)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 6</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 17, 2026 - Markets & Photography</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>07:30</strong> - Breakfast at local café
+                    </div>
+                    <div class="time-item">
+                        <strong>08:30</strong> - Morning Temple Street market exploration
+                    </div>
+                    <div class="time-item">
+                        <strong>11:00</strong> - Visit Ladies Market (Free)
+                    </div>
+                    <div class="time-item">
+                        <strong>13:00</strong> - Lunch at hawker stall (25,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>15:00</strong> - Photography walk in neighborhoods (Free)
+                    </div>
+                    <div class="time-item">
+                        <strong>17:30</strong> - Sunset photography at various locations
+                    </div>
+                    <div class="time-item">
+                        <strong>19:30</strong> - Dinner at night market or restaurant (40,000 MNT)
+                    </div>
+                </div>
+
+                <div class="day-card">
+                    <div class="day-header">
+                        <span class="day-number">Day 7</span>
+                        <span style="color: #2c5282; font-weight: 600;">November 18, 2026 - Final Day & Departure</span>
+                    </div>
+                    <div class="time-item">
+                        <strong>07:00</strong> - Early breakfast at hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>08:00</strong> - Last-minute shopping or café visit
+                    </div>
+                    <div class="time-item">
+                        <strong>11:00</strong> - Check-out from hotel
+                    </div>
+                    <div class="time-item">
+                        <strong>11:30</strong> - Grab to airport (100,000 MNT)
+                    </div>
+                    <div class="time-item">
+                        <strong>14:30</strong> - Flight to Ulaanbaatar
+                    </div>
+                    <div class="time-item">
+                        <strong>17:05</strong> - Arrive Ulaanbaatar
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOTELS -->
+            <div id="hotels" class="tab-content">
+                <h2 class="section-title">Accommodation Details</h2>
+
+                <h3 class="subsection-title">Hong Kong (Nov 12-18, 6 Nights)</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Kowloon Hotel</div>
+
+                    <div class="card-header">
+                        <h3>Kowloon Hotel</h3>
+                        <span class="price-badge">180,000 MNT/night</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>19-21 Nathan Road, Tsim Sha Tsui, Kowloon, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Phone</strong>
+                            <p>+852 2929 2888</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR Station</strong>
+                            <p>Tsim Sha Tsui (2 min walk)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Check-in/out</strong>
+                            <p>3:00 PM / 12:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="rating">★★★★★ 4.5/5 (3,856+ reviews)</div>
+
+                    <div class="description">
+                        Excellent 4-star international hotel perfectly located in Tsim Sha Tsui. Known for superior cleanliness, professional service, and fair pricing without international surcharges. Direct access to shopping malls, restaurants, and very close to Kai Tak Stadium for BIGBANG concert!
+                    </div>
+
+                    <div class="features">
+                        <h4>What's Included:</h4>
+                        <ul>
+                            <li>Comfortable private room with modern amenities</li>
+                            <li>Complimentary daily breakfast buffet</li>
+                            <li>Free high-speed WiFi throughout</li>
+                            <li>24/7 front desk & concierge service</li>
+                            <li>Air-conditioning & heating</li>
+                            <li>LCD TV & work desk</li>
+                            <li>En-suite bathroom with premium amenities</li>
+                            <li>Fitness center access</li>
+                        </ul>
+                    </div>
+
+                    <p style="color: #1a365d; font-weight: 600; margin: 15px 0;">Total: 6 nights × 180,000 = 1,080,000 MNT</p>
+
+                    <div class="link-buttons">
+                        <a href="https://www.booking.com/hotel/hk/kowloon-hotel.html" target="_blank" class="link-button">Book on Booking.com</a>
+                        <a href="https://www.agoda.com/kowloon-hotel-hong-kong/hotel/hong-kong-hk.html" target="_blank" class="link-button">Book on Agoda</a>
+                        <a href="https://www.klook.com/hotel/kowloon-hotel-hong-kong" target="_blank" class="link-button">Book on Klook</a>
+                    </div>
+                </div>
+
+                <div class="budget-total">
+                    <h3>Total Hotel Cost</h3>
+                    <div class="amount">1,080,000 MNT</div>
+                    <p style="opacity: 0.9; margin-top: 10px;">6 nights in Hong Kong at 180,000/night</p>
+                </div>
+            </div>
+
+            <!-- RESTAURANTS -->
+            <div id="restaurants" class="tab-content">
+                <h2 class="section-title">Restaurants & Cafes</h2>
+
+                <h3 class="subsection-title">Fine Dining & Special Occasions</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Amber at Mandarin Oriental</div>
+
+                    <div class="card-header">
+                        <h3>Amber - Fine Dining</h3>
+                        <span class="price-badge">120,000-150,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>Mandarin Oriental, 5 Connaught Road Central, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Phone</strong>
+                            <p>+852 2522 0111</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>12:00 PM - 2:00 PM | 6:30 PM - 10:00 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Central (3 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="rating">★★★★★ 4.8/5 - Michelin Stars</div>
+
+                    <div class="description">
+                        Elegant fine dining restaurant with stunning harbour views. French haute cuisine with Asian influences. Perfect for special occasion dinner before or after concert!
+                    </div>
+
+                    <div class="features">
+                        <h4>Specialties:</h4>
+                        <ul>
+                            <li>Foie Gras preparations - 60,000 MNT</li>
+                            <li>Pan-seared seafood - 55,000 MNT</li>
+                            <li>Classic French dishes - 50,000-70,000 MNT</li>
+                            <li>Signature tasting menu - 140,000 MNT</li>
+                            <li>Extensive wine selection</li>
+                        </ul>
+                    </div>
+
+                    <div class="link-buttons">
+                        <a href="https://www.mandarinoriental.com/en/hong-kong/central/fine-dining/amber" target="_blank" class="link-button">Book Online</a>
+                    </div>
+                </div>
+
+                <div class="place-card">
+                    <div class="card-image">Maxim's Palace</div>
+
+                    <div class="card-header">
+                        <h3>Maxim's Palace - Dim Sum</h3>
+                        <span class="price-badge">50,000-80,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>1/F City Hall, Edinburgh Place, Central, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Phone</strong>
+                            <p>+852 2521 1303</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>10:00 AM - 3:00 PM (Dim Sum)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Central (5 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="rating">★★★★★ 4.6/5 - Legendary</div>
+
+                    <div class="description">
+                        Iconic dim sum restaurant with traditional cart service. Authentic Cantonese experience. Must-visit for real Hong Kong dining!
+                    </div>
+
+                    <div class="features">
+                        <h4>Popular Items:</h4>
+                        <ul>
+                            <li>Har Gow (Shrimp Dumplings) - 12,000 MNT</li>
+                            <li>Siu Mai (Pork Dumplings) - 12,000 MNT</li>
+                            <li>Char Siu Bao (BBQ Pork Bun) - 10,000 MNT</li>
+                            <li>Chicken Feet in Black Bean - 15,000 MNT</li>
+                            <li>Rice Noodle Roll - 13,000 MNT</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        Servers push carts around. Point to items you like. Pay based on empty plates at the end!
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Casual Dining</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Temple Street Night Market</div>
+
+                    <div class="card-header">
+                        <h3>Temple Street Hawker Stalls</h3>
+                        <span class="price-badge">20,000-40,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Location</strong>
+                            <p>Temple Street, Mong Kok, Kowloon</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>6:00 PM - 11:30 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Mong Kok Station (2 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Iconic night market with street food and authentic atmosphere. Perfect budget dining with incredible flavors!
+                    </div>
+
+                    <div class="features">
+                        <h4>Must-Try Street Foods:</h4>
+                        <ul>
+                            <li>Satay Skewers - 20,000-25,000 MNT</li>
+                            <li>Fish Balls with Curry Sauce - 15,000 MNT</li>
+                            <li>Stir-Fried Noodles - 25,000 MNT</li>
+                            <li>Grilled Squid - 30,000 MNT</li>
+                            <li>Grilled Chicken Wing - 20,000 MNT</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Beautiful Cafes & Coffee Shops</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Espresso Lab Cafe</div>
+
+                    <div class="card-header">
+                        <h3>Espresso Lab - Specialty Coffee</h3>
+                        <span class="price-badge">30,000-50,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>G/F, 49 Gough Street, Central, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>8:00 AM - 7:00 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Specialty</strong>
+                            <p>Third-wave coffee & pastries</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Award-winning specialty coffee café in Central. Beautiful vintage decor, excellent pastries, perfect for morning coffee or afternoon work session.
+                    </div>
+
+                    <div class="features">
+                        <h4>Menu Items:</h4>
+                        <ul>
+                            <li>Single-origin pour-over - 35,000 MNT</li>
+                            <li>Flat white - 28,000 MNT</li>
+                            <li>Fresh pastries - 20,000-35,000 MNT</li>
+                            <li>Specialty lattes - 32,000 MNT</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="place-card">
+                    <div class="card-image">PMQ Cafe</div>
+
+                    <div class="card-header">
+                        <h3>PMQ Cafes & Galleries</h3>
+                        <span class="price-badge">25,000-45,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>35 Aberdeen Street, Central, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>11:00 AM - 10:00 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Features</strong>
+                            <p>Design studios & art galleries inside</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Creative hub with multiple cafes, design studios, and art galleries. Beautiful for exploring and enjoying coffee while discovering local designers.
+                    </div>
+
+                    <div class="features">
+                        <h4>Inside PMQ:</h4>
+                        <ul>
+                            <li>Multiple themed cafes</li>
+                            <li>Design shops & galleries</li>
+                            <li>Art exhibitions (Free)</li>
+                            <li>Creative workshops</li>
+                            <li>Great photo spots</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATTRACTIONS -->
+            <div id="attractions" class="tab-content">
+                <h2 class="section-title">Attractions & Galleries</h2>
+
+                <h3 class="subsection-title">Art Museums & Galleries</h3>
+
+                <div class="place-card">
+                    <div class="card-image">M+ Museum</div>
+
+                    <div class="card-header">
+                        <h3>M+ Museum - Visual Culture</h3>
+                        <span class="price-badge">50,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>West Kowloon Cultural District, Mong Kok, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Phone</strong>
+                            <p>+852 2200 0888</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>10:00 AM - 8:00 PM (Closed Tuesdays)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Yau Ma Tei (10 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="rating">★★★★★ 4.7/5 - Best Museum</div>
+
+                    <div class="description">
+                        Asia's largest museum dedicated to visual culture. Modern architecture, contemporary art, design, and moving image works. Stunning harbour views from building exterior.
+                    </div>
+
+                    <div class="features">
+                        <h4>Collections:</h4>
+                        <ul>
+                            <li>Contemporary art exhibitions</li>
+                            <li>Photography & design galleries</li>
+                            <li>Moving image library (Films/Videos)</li>
+                            <li>Special exhibitions rotate</li>
+                            <li>Museum café with views</li>
+                        </ul>
+                    </div>
+
+                    <div class="link-buttons">
+                        <a href="https://www.mplus.org.hk/" target="_blank" class="link-button">Official Website</a>
+                    </div>
+                </div>
+
+                <div class="place-card">
+                    <div class="card-image">Hong Kong Museum of Art</div>
+
+                    <div class="card-header">
+                        <h3>Hong Kong Museum of Art</h3>
+                        <span class="price-badge">30,000 MNT</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>10 Salisbury Road, Tsim Sha Tsui, Kowloon</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Phone</strong>
+                            <p>+852 2721 0116</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>10:00 AM - 6:00 PM (Closed Thursdays)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Tsim Sha Tsui (5 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Hong Kong's premier art museum featuring classical Chinese art, contemporary works, and special exhibitions. Excellent collection of ink paintings and ceramics.
+                    </div>
+
+                    <div class="features">
+                        <h4>Featured Collections:</h4>
+                        <ul>
+                            <li>Classical Chinese paintings</li>
+                            <li>Ceramics & porcelain</li>
+                            <li>Contemporary Hong Kong art</li>
+                            <li>Special international exhibitions</li>
+                            <li>Museum shop with art books</li>
+                        </ul>
+                    </div>
+
+                    <div class="link-buttons">
+                        <a href="https://www.hkam.org.hk/" target="_blank" class="link-button">Official Website</a>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Iconic Attractions</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Victoria Peak</div>
+
+                    <div class="card-header">
+                        <h3>Peak Tram & Victoria Peak</h3>
+                        <span class="price-badge">90,000 MNT (Round trip)</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Location</strong>
+                            <p>1 Peak Road, The Peak, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>7:00 AM - 11:00 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Best Time</strong>
+                            <p>Sunset (5:00 PM - 7:00 PM)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Central (15 min to Peak Tram)</p>
+                        </div>
+                    </div>
+
+                    <div class="rating">★★★★★ 4.8/5 - Must-Visit</div>
+
+                    <div class="description">
+                        Hong Kong's #1 tourist attraction. UNESCO-recognized historic funicular railway with stunning 360° views of Hong Kong harbour and city skyline. Most iconic photo spot in Hong Kong!
+                    </div>
+
+                    <div class="features">
+                        <h4>What to See:</h4>
+                        <ul>
+                            <li>Panoramic city views from Peak Lookout</li>
+                            <li>Madame Tussauds Wax Museum (optional)</li>
+                            <li>Peak Tower shopping</li>
+                            <li>Sky Terrace 428 observation platform</li>
+                            <li>Hiking trails around peak</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        Pro Tip: Go at sunset for best photos! Bring a light jacket (cooler at peak). Get tickets at Central station.
+                    </div>
+
+                    <div class="link-buttons">
+                        <a href="https://www.thepeak.com.hk/" target="_blank" class="link-button">Official Website</a>
+                    </div>
+                </div>
+
+                <div class="place-card">
+                    <div class="card-image">Star Ferry</div>
+
+                    <div class="card-header">
+                        <h3>Star Ferry Harbour Cruise</h3>
+                        <span class="price-badge">35,000 MNT (Round trip)</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Location</strong>
+                            <p>Star Ferry Pier, Central & Tsim Sha Tsui</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>6:30 AM - 11:30 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Duration</strong>
+                            <p>8-12 minutes each direction</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Best Time</strong>
+                            <p>Sunset (5:30 PM - 7:00 PM)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Iconic green and white ferry crossing Victoria Harbour. Cheap tourist activity with spectacular views. Best experienced at sunset or night with harbour lights!
+                    </div>
+
+                    <div class="features">
+                        <h4>Experience:</h4>
+                        <ul>
+                            <li>Historic ferry since 1888</li>
+                            <li>Upper Deck (Star Class) - better views</li>
+                            <li>Lower Deck cheaper option</li>
+                            <li>11-minute journey with amazing photos</li>
+                            <li>Nighttime sailing highly recommended</li>
+                        </ul>
+                    </div>
+
+                    <div class="link-buttons">
+                        <a href="https://www.starferry.com.hk/" target="_blank" class="link-button">Book Tickets</a>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Temples & Cultural Sites</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Wong Tai Sin Temple</div>
+
+                    <div class="card-header">
+                        <h3>Wong Tai Sin Temple</h3>
+                        <span class="price-badge">FREE Entry</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>2 Chuk Yuen Road, Wong Tai Sin, Kowloon</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>7:00 AM - 5:30 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Donation</strong>
+                            <p>Optional (10,000-20,000 MNT)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Wong Tai Sin Station (5 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Beautiful ancient Taoist temple dedicated to Wong Tai Sin (deity of healing). Traditional architecture, incense-filled halls, fortune tellers. Authentic Hong Kong spiritual experience!
+                    </div>
+
+                    <div class="features">
+                        <h4>Temple Features:</h4>
+                        <ul>
+                            <li>Main hall with incense offerings</li>
+                            <li>Traditional fortune-telling services</li>
+                            <li>Chinese herb medicine shop</li>
+                            <li>Peaceful gardens & courtyards</li>
+                            <li>Great photo opportunities</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        Visit early morning (7-9 AM) for fewer crowds and best light. Fortune sticks cost 10,000 MNT.
+                    </div>
+                </div>
+
+                <div class="place-card">
+                    <div class="card-image">Man Mo Temple</div>
+
+                    <div class="card-header">
+                        <h3>Man Mo Temple (Sheung Wan)</h3>
+                        <span class="price-badge">FREE Entry</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Address</strong>
+                            <p>124-126 Hollywood Road, Sheung Wan, Hong Kong</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hours</strong>
+                            <p>8:00 AM - 6:00 PM</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Built</strong>
+                            <p>1847 - Historic temple</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Sheung Wan (10 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        One of Hong Kong's oldest temples (170+ years). Atmospheric with hanging incense coils, traditional Taoist architecture. Central's most authentic cultural site.
+                    </div>
+
+                    <div class="features">
+                        <h4>Temple Features:</h4>
+                        <ul>
+                            <li>Iconic hanging incense coils</li>
+                            <li>Ancient wooden decorations</li>
+                            <li>Serene atmosphere despite location</li>
+                            <li>Nearby antique shops & galleries</li>
+                            <li>Perfect photo location</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Markets & Shopping</h3>
+
+                <div class="place-card">
+                    <div class="card-image">Jade & Ladies Markets</div>
+
+                    <div class="card-header">
+                        <h3>Jade Market & Ladies Market</h3>
+                        <span class="price-badge">FREE to Browse | 20,000-100,000 MNT to Purchase</span>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Jade Market</strong>
+                            <p>Jade Market Building, Kowloon, Mong Kok (10 AM - 4 PM)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Ladies Market</strong>
+                            <p>Tung Choi Street, Mong Kok (Free, Afternoon-Evening)</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>What to Find</strong>
+                            <p>Traditional crafts, souvenirs, clothes, jade</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>MTR</strong>
+                            <p>Mong Kok Station (2-5 min walk)</p>
+                        </div>
+                    </div>
+
+                    <div class="description">
+                        Experience authentic Hong Kong markets. Browse traditional jade items, souvenirs, and local crafts. Great place to practice bargaining and immerse in local culture.
+                    </div>
+
+                    <div class="features">
+                        <h4>What to Buy:</h4>
+                        <ul>
+                            <li>Jade pendants & bracelets</li>
+                            <li>Silk scarves & traditional clothing</li>
+                            <li>Souvenir trinkets</li>
+                            <li>Tea & Chinese medicine</li>
+                            <li>Calligraphy & art pieces</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        Pro Tip: Bargain politely! Start at 50-70% of asking price. Visit Jade Market in morning, Ladies Market in afternoon/evening.
+                    </div>
+                </div>
+
+                <div class="budget-total">
+                    <h3>Total Attractions & Activities</h3>
+                    <div class="amount">295,000 MNT</div>
+                    <p style="opacity: 0.9; margin-top: 10px;">Peak Tram (90k) + M+ Museum (50k) + HK Museum of Art (30k) + Wong Tai Sin temple (20k) + Star Ferry (35k) + Wan Chai Heritage (40k) + BIGBANG Concert (700k included separately)</p>
+                </div>
+            </div>
+
+            <!-- BUDGET -->
+            <div id="budget" class="tab-content">
+                <h2 class="section-title">Complete Budget Breakdown</h2>
+
+                <div class="highlight" style="background: #1a365d; color: white; border-left: none; border-radius: 6px;">
+                    <h3 style="color: white; font-size: 1.3em;">Trip Overview: 7 Days Hong Kong Only</h3>
+                    <p style="opacity: 0.95; margin-top: 10px; font-size: 1.05em;">November 12-18, 2026 | 1 Person | Full Hong Kong Experience</p>
+                </div>
+
+                <table class="budget-table">
+                    <tr>
+                        <td style="font-weight: 600; padding: 15px;">EXPENSE CATEGORY</td>
+                        <td style="font-weight: 600; padding: 15px;">DETAILS</td>
+                        <td style="font-weight: 600; padding: 15px; text-align: right;">COST (MNT)</td>
+                    </tr>
+                    <tr>
+                        <td>Flights</td>
+                        <td>UBN → Hong Kong → UBN (Round trip)</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">2,287,500</td>
+                    </tr>
+                    <tr>
+                        <td>Accommodation</td>
+                        <td>6 nights at Kowloon Hotel (180k/night)</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">1,080,000</td>
+                    </tr>
+                    <tr>
+                        <td>BIGBANG Concert</td>
+                        <td>Premium/VIP Seating at Kai Tak Stadium</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">700,000</td>
+                    </tr>
+                    <tr>
+                        <td>Museums & Attractions</td>
+                        <td>Peak Tram (90k) + M+ (50k) + HK Art Museum (30k) + Others (75k)</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">245,000</td>
+                    </tr>
+                    <tr>
+                        <td>Restaurants & Dining</td>
+                        <td>7 days × avg 95k/day (mix fine & casual)</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">665,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cafes & Beverages</td>
+                        <td>Daily coffee, pastries, snacks</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">140,000</td>
+                    </tr>
+                    <tr>
+                        <td>Local Transport</td>
+                        <td>MTR, Grab, Airport transfer, ferries</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">280,000</td>
+                    </tr>
+                    <tr>
+                        <td>Shopping & Souvenirs</td>
+                        <td>Gifts, local items, jade pieces</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">120,000</td>
+                    </tr>
+                    <tr>
+                        <td>Miscellaneous</td>
+                        <td>Tips, emergency buffer, toiletries</td>
+                        <td style="text-align: right; color: #1a365d; font-weight: bold;">63,500</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">TOTAL TRIP COST</td>
+                        <td style="font-weight: 600;">Complete 7-Day Hong Kong Adventure</td>
+                        <td style="text-align: right; font-weight: bold;">5,581,000</td>
+                    </tr>
+                </table>
+
+                <div class="budget-total">
+                    <h3>Your Total Investment</h3>
+                    <div class="amount">5,581,000 MNT</div>
+                    <p style="opacity: 0.95; margin-top: 15px;">Includes ALL: flights, hotels, BIGBANG concert (VIP), museums, galleries, restaurants, cafes & transport</p>
+                    <p style="opacity: 0.9; margin-top: 10px; font-size: 0.95em;">Per Day Average: 797,286 MNT</p>
+                </div>
+
+                <h3 class="subsection-title">Money-Saving Tips</h3>
+
+                <div class="info-box">
+                    <h4>✓ Food Savings</h4>
+                    <ul>
+                        <li>Hawker stalls & street food (20-40k MNT)</li>
+                        <li>Convenience stores for snacks</li>
+                        <li>Hotel breakfast included!</li>
+                        <li>Dim sum lunch often cheaper than dinner</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>✓ Transport Savings</h4>
+                    <ul>
+                        <li>Get Octopus card (Unlimited MTR)</li>
+                        <li>Star Ferry is both transport & activity</li>
+                        <li>Walk when possible (Free!)</li>
+                        <li>Use Grab instead of taxis</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>✓ Activity Savings</h4>
+                    <ul>
+                        <li>Many temples are FREE</li>
+                        <li>Markets are FREE to browse</li>
+                        <li>Photography walks are FREE</li>
+                        <li>Book museums online (sometimes cheaper)</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>✓ Accommodation Savings</h4>
+                    <ul>
+                        <li>Free breakfast at Kowloon Hotel</li>
+                        <li>Free WiFi included</li>
+                        <li>Central location saves transport costs</li>
+                        <li>Longer stay = better rates</li>
+                    </ul>
+                </div>
+
+                <h3 class="subsection-title">Budget Adjustment Options</h3>
+
+                <div class="info-box">
+                    <h4>To Reduce Budget (Save 300,000+ MNT):</h4>
+                    <ul>
+                        <li>Choose 3-4 museums instead of all (save 100k)</li>
+                        <li>Mix budget restaurants with fine dining (save 200k)</li>
+                        <li>Skip some activities, focus on must-sees</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>To Add Luxury (Spend 300,000+ More):</h4>
+                    <ul>
+                        <li>Upgrade to 5-star hotel</li>
+                        <li>Add yacht harbour cruise</li>
+                        <li>Fine dining experiences</li>
+                        <li>Spa treatments & wellness</li>
+                    </ul>
+                </div>
+
+                <h3 class="subsection-title">Safety & Important Notes</h3>
+
+                <div class="highlight">
+                    <strong>Safety:</strong> Hong Kong is one of Asia's safest cities. Excellent public transport, clear signage in English. Solo travelers very safe. 24/7 tourism support available.
+                </div>
+
+                <div class="highlight">
+                    <strong>Weather (November):</strong> Perfect season! 15-25°C, low humidity, occasional light rain. Bring light jacket & umbrella.
+                </div>
+
+                <div class="highlight">
+                    <strong>Currency:</strong> Hong Kong Dollar (HKD). 1 HKD ≈ 3,600-3,700 MNT. Exchange at airport or use ATMs for best rates.
+                </div>
+
+                <div class="highlight">
+                    <strong>Mobile:</strong> Buy local SIM card at airport. 3HK, SmarTone, or CSL offer good tourist packages.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                document.getElementById(tabName).classList.add('active');
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
