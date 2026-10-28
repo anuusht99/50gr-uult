@@ -361,6 +361,9 @@ textarea{min-height:4.5em;resize:vertical}
 .media-edit audio{max-width:100%}
 .stepnav.split{justify-content:space-between}
 .stp.home b{font-size:1.05rem}
+.qcol{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+.qnote{display:inline-block;background:linear-gradient(120deg,rgba(198,239,58,.18),rgba(247,183,51,.18));border:1px solid rgba(198,239,58,.6);color:var(--lime);font-weight:800;border-radius:999px;padding:.35em 1em;font-size:clamp(.9rem,1.4vw,1.15rem);text-align:center}
+.hint small{color:var(--muted)}
 </style>
 
 </head>
@@ -405,49 +408,50 @@ const VALUES=[2,3,4,5];
 const LET=['А','Б','В','Г'];
 const DEFAULT_NAMES=['T-i','Wakes us up on Payday','🍭 Sweet but Psycho','Мэсний иж бүрдэл','HR team'];
 const GRAD=[['#f58a8f','#b8407a'],['#a77cff','#5b2bb0'],['#f2a7b4','#c45a8a'],['#7f6bff','#3a2a9e'],['#ec6f78','#8e2a6e'],['#c58bff','#7a3fc4'],['#ff9fb1','#d0567a'],['#8fa2ff','#4a3bb5']];
-const Q=(q,a,c,pic)=>({q,a,c,pic:pic||''});
+const Q=(q,a,c,pic,x)=>Object.assign({q,a,c,pic:pic||''},x||{});
+const QV=2;
 const DEFAULT_Q={
  main:[
-  {name:'Хэллоуины түүх',qs:{
-   2:Q('Хэллоуиныг аль өдөр тэмдэглэдэг вэ?',['10-р сарын 31','11-р сарын 1','12-р сарын 24','9-р сарын 30'],0,''),
-   3:Q('Ирланд цагаачид Хэллоуины заншлыг Америкт өргөн түгээсэн нь ямар үйл явдлын дараа болсон бэ?',['Төмсний их өлсгөлөн (1840-өөд)','Америкийн иргэний дайн','Калифорнийн алтны халуурал','Аж үйлдвэрийн хувьсгал'],0,''),
-   4:Q('Эртний кельтүүдийн "Самхайн" гэдэг үг ихэвчлэн юу гэж орчуулагддаг вэ?',['Зуны төгсгөл','Үхэгсдийн шөнө','Галын баяр','Ургацын сар'],0,''),
-   5:Q('Бүх гэгээнтний өдрийг 11-р сарын 1-нд шилжүүлсэн гэж үздэг Ромын пап хэн бэ?',['Пап Григорий III','Пап Бонифаций IV'],0,'')}},
-  {name:'Аймшгийн кино',qs:{
-   2:Q('Зургаар таа: энэ ямар кино вэ?',['Jaws','Anaconda','King Kong','Godzilla'],0,'🦈🏖️🚤😱'),
-   3:Q('Зургаар таа: энэ ямар аймшгийн кино вэ?',['Midsommar','The Wicker Man','Hereditary','The Witch'],0,'🌞🌸👑🐻🔥'),
-   4:Q('"Psycho" (1960) киноны шүршүүрийн алдарт хэсэгт цусны оронд юу хэрэглэсэн бэ?',['Шоколадан сироп','Улаан лоолийн шүүс','Улаан будаг','Хар кофе'],0,''),
-   5:Q('"The Blair Witch Project" (1999) киноны зураг авалтын төсөв аль нь ойр вэ?',['Ойролцоогоор 60 мянган доллар','Ойролцоогоор 6 сая доллар'],0,'')}},
+  {name:'Halloween-ы тухай',qs:{
+   2:Q('Halloween-ий үеэр хүмүүс хулууг ухаж, дотор нь гэрэл хийж ямар нэртэй чимэглэл хийдэг вэ?',["Jack-o'-lantern",'Pumpkin King','Ghost Light','Witch Lamp'],0),
+   3:Q('Ирланд цагаачид Хэллоуины заншлыг Америкт өргөн түгээсэн нь ямар үйл явдлын дараа болсон бэ?',['Төмсний их өлсгөлөн (1840-өөд)','Америкийн иргэний дайн','Калифорнийн алтны халуурал'],0),
+   4:Q('Halloween-ы өмнөх өдөр буюу 10-р сарын 30-ныг зарим газарт юу гэж нэрлэдэг вэ?',['Black Friday','Mischief Night','Ghost Sunday'],1),
+   5:Q('Bram Stoker-ийн "Dracula" роман хэдэн онд анх хэвлэгдсэн бэ?',['1886','1897'],1,'',{note:'Нэмэлт: +1 shot tequila'})}},
+  {name:'Газарзүй',qs:{
+   2:Q('Дэлхийн хамгийн том далай аль вэ?',['Атлантын далай','Энэтхэгийн далай','Номхон далай','Хойд мөсөн далай'],2),
+   3:Q('Дэлхийн хамгийн гүн далайн цэг аль вэ?',['Тонгагийн хонхор','Challenger Deep','Японы хонхор'],1),
+   4:Q('Экваторын шугам хэдэн тивийг дайран өнгөрдөг вэ?',['2','3','4'],1,'',{note:'Нэмэлт: +1 shot tequila'}),
+   5:Q('Аль улс хамгийн олон цагийн бүсийг хамардаг вэ?',['ОХУ','Франц'],1,'',{expl:'Францын хилийн чанад дахь нутаг дэвсгэрүүдийг тооцвол дэлхий даяар хамгийн олон цагийн бүсийг хамардаг.'})}},
+  {name:'Одон орон',qs:{
+   2:Q('Нарны аймгийн аль гараг цагирагтай гэдгээрээ хамгийн алдартай вэ?',['Санчир','Дэлхий','Ангараг','Буд'],0),
+   3:Q('Нарны аймгийн хамгийн халуун гараг аль вэ?',['Буд','Сугар','Ангараг'],1),
+   4:Q('Нарны аймгийн хамгийн том галт уул болох Olympus Mons аль гараг дээр байдаг вэ?',['Дэлхий','Ангараг','Сугар'],1,'',{note:'Нэмэлт: +1 shot tequila'}),
+   5:Q('Нарны аймгийн хамгийн том дагуул аль вэ?',['Титан','Ганимед'],1)}},
+  {name:'Соёл уламжлал',qs:{
+   2:Q('Oktoberfest хэмээх алдарт баяр аль улсад үүссэн бэ?',['Франц','Герман','Итали','Испани'],1),
+   3:Q('Flamenco бүжиг аль улстай хамгийн их холбоотой вэ?',['Испани','Итали','Грек'],0),
+   4:Q('Италийн Венец хотын алдарт Карнавалын үеэр хүмүүс юугаараа онцгой хувцасладаг вэ?',['Самурайн хуяг','Маск, тансаг хувцас','Скафандр'],1),
+   5:Q('Дэлхийн хамгийн эртний уламжлалт театрын урлагуудын нэг болох Кабуки аль улсад үүссэн бэ?',['Хятад','Япон'],1)}},
+  {name:'Амьтны ертөнц',qs:{
+   2:Q('Аль амьтан гурван зүрхтэй вэ?',['Дельфин','Наймаалж','Акул','Мэлхий'],1),
+   3:Q('Аль амьтны цус цэнхэр өнгөтэй байдаг вэ?',['Халим','Наймаалж','Мэлхий'],1),
+   4:Q('Аль амьтны хурууны хээ хүнийхтэй маш төстэй вэ?',['Коала','Панда','Имж'],0),
+   5:Q('Аль амьтан унтаж байхдаа ч нэг тархины хагас бөмбөлгөө сэрүүн байлгаж чаддаг вэ?',['Дельфин','Сарьсан багваахай'],0)}},
+  {name:'Сонирхолтой баримтууд',qs:{
+   2:Q('Хүний биеийн хамгийн том эрхтэн аль вэ?',['Тархи','Элэг','Арьс','Уушги'],2),
+   3:Q('GPS систем байршлыг тодорхойлоход голчлон ямар дохио ашигладаг вэ?',['Далайн урсгал','Хиймэл дагуулын радио дохио','Газрын соронзон чулуу'],1),
+   4:Q('Дэлхийн агаар мандалд хамгийн их байдаг хий аль вэ?',['Хүчилтөрөгч','Азот','Нүүрсхүчлийн хий'],1),
+   5:Q('Насанд хүрсэн хүний тархи дунджаар хэд орчим жинтэй вэ?',['700 грамм','1.3–1.4 кг'],1)}},
   {name:'Кино таавар',qs:{
    2:Q('Зургаар таа: энэ ямар кино вэ?',['The Lion King','Madagascar','Tarzan','The Jungle Book'],0,'🦁👑🌅'),
-   3:Q('Зургаар таа: энэ ямар кино вэ?',['Inception','Interstellar','Tenet','Shutter Island'],0,'🌀💤🏙️🔄'),
-   4:Q('Оскарын "Шилдэг кино" шагнал авсан анхны англи бус хэлтэй кино аль нь вэ?',['Parasite','Roma','Crouching Tiger, Hidden Dragon','Amélie'],0,''),
-   5:Q('"Titanic" (1997) 11 Оскар авсан. Ижил 11 Оскар авсан нөгөө кино аль нь вэ?',['Ben-Hur','Gone with the Wind'],0,'')}},
+   3:Q('Halloween аймшгийн киноны цувралын алдарт масктай алуурчны нэр хэн бэ?',['Jason Voorhees','Freddy Krueger','Michael Myers'],2,'',{note:'Challenge: Багийн гишүүд хоорондоо юм ярьж болохгүй'}),
+   4:Q('Оскарын "Шилдэг кино" шагнал авсан анхны англи бус хэлтэй кино аль нь вэ?',['Parasite','Roma','Crouching Tiger, Hidden Dragon'],0),
+   5:Q('"Titanic" (1997) 11 Оскар авсан. Ижил 11 Оскар авсан нөгөө кино аль нь вэ?',['Ben-Hur','Gone with the Wind'],0)}},
   {name:'Дуу хөгжим',qs:{
-   2:Q('Клипэндээ зомбинуудтай бүжиглэдэг "Thriller" дууг хэн дуулсан бэ?',['Майкл Жексон','Мадонна','Принс','Элвис Пресли'],0,''),
-   3:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Винсент Прайс','Борис Карлофф','Кристофер Ли','Бела Лугоши'],0,''),
-   4:Q('Сен-Сансын "Danse macabre"-д үхлийг төлөөлөх гоцлол хийлийг хэрхэн тааруулдаг вэ?',['Хамгийн нарийн утсыг хагас аяаар доошлуулдаг','Бүх утсыг октавоор дээшлүүлдэг','Хоёр нумаар зэрэг тоглодог','Утасгүй, зөвхөн нумаар цохидог'],0,''),
-   5:Q('"Хөгжмийн чөтгөр" гэгддэг тритон интервал хэдэн хагас аястай вэ?',['6','5'],0,'')}},
-  {name:'Мангас ба домог',qs:{
-   2:Q('Гүн Дракула аль нутагт амьдардаг гэж дүрслэгддэг вэ?',['Трансильвани','Шотланд','Египет','Норвеги'],0,''),
-   3:Q('Брам Стокерын "Дракула" роман ямар хэлбэрээр бичигдсэн бэ?',['Захидал, өдрийн тэмдэглэлүүдээр','Дракулагийн өөрийн хүүрнэлээр','Шүлгээр','Жүжгийн зохиолоор'],0,''),
-   4:Q('Дракулагийн прототип гэгддэг Валахийн ноён Влад III-ийн "Цепеш" хоч юу гэсэн утгатай вэ?',['Шорлогч','Луу','Чоно','Цус сорогч'],0,''),
-   5:Q('Мэри Шелли "Франкенштейн"-ийг бичиж эхлэхдээ хэдэн настай байсан бэ?',['18','25'],0,'')}},
-  {name:'Хулуу ба амттан',qs:{
-   2:Q('Хэллоуинд хүүхдүүд айл айлын хаалга тогшоод юу гуйдаг вэ?',['Чихэр, амттан','Мөнгө','Тоглоом','Ном'],0,''),
-   3:Q('Хэллоуины "candy corn" чихрийг анх юу гэж нэрлэж байсан бэ?',['Chicken Feed','Pumpkin Bits','Witch Teeth','Harvest Gems'],0,''),
-   4:Q('Хулуу ургамлын аль овогт багтдаг вэ?',['Cucurbitaceae','Solanaceae','Rosaceae','Brassicaceae'],0,''),
-   5:Q('2023 онд рекорд тогтоосон дэлхийн хамгийн том хулууны жин аль нь вэ?',['Ойролцоогоор 1247 кг','Ойролцоогоор 1190 кг'],0,'')}},
-  {name:'Айдас ба шид',qs:{
-   2:Q('Шулам ихэвчлэн юу унаж нисдэг гэж дүрслэгддэг вэ?',['Шүүр','Хивс','Шүхэр','Дугуй'],0,''),
-   3:Q('Салемын шуламын шүүх хурал хэдэн онд болсон бэ?',['1692','1592','1642','1792'],0,''),
-   4:Q('"Самхейнофоби" (samhainophobia) гэж юунаас айх айдас вэ?',['Хэллоуинаас','Хулуунаас','Шуламаас','Тэргэл сарнаас'],0,''),
-   5:Q('Салемын шүүх хурлаар ял сонссон 19 хүнийг хэрхэн цаазалсан бэ?',['Дүүжилсэн','Галд шатаасан'],0,'')}},
-  {name:'Шөнийн амьтад',qs:{
-   2:Q('Аалз хэдэн хөлтэй вэ?',['8','6','10','12'],0,''),
-   3:Q('Цус сорогч сарьсан багваахай цусыг хэрхэн авдаг вэ?',['Шархнаас долоож','Хошуугаараа сорж','Хорт шүлсээр уусгаж','Хумсаараа урж'],0,''),
-   4:Q('Хар бэлэвсэн аалзны хэвлий дээрх улаан тэмдэг ямар хэлбэртэй вэ?',['Элсэн цаг','Загалмай','Зүрх','Од'],0,''),
-   5:Q('Шар шувууны нүд гавлын ясан дотроо эргэлддэг үү?',['Үгүй','Тийм'],0,'')}}
+   2:Q('Клипэндээ зомбинуудтай бүжиглэдэг "Thriller" дууг хэн дуулсан бэ?',['Майкл Жексон','Мадонна','Принс','Элвис Пресли'],0),
+   3:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Винсент Прайс','Борис Карлофф','Кристофер Ли'],0),
+   4:Q('Сен-Сансын "Danse macabre"-д үхлийг төлөөлөх гоцлол хийлийг хэрхэн тааруулдаг вэ?',['Хамгийн нарийн утсыг хагас аяаар доошлуулдаг','Бүх утсыг октавоор дээшлүүлдэг','Хоёр нумаар зэрэг тоглодог'],0),
+   5:Q('"Хөгжмийн чөтгөр" гэгддэг тритон интервал хэдэн хагас аястай вэ?',['6','5'],0)}}
  ],
  final:[
   {name:'Хэллоуины холимог',qs:{
@@ -470,12 +474,13 @@ function fresh(keep){
   return {phase:'setup',
     teams:(keep?keep.teams.map(t=>t.name):DEFAULT_NAMES).map(n=>({name:n,main:0,final:0})),
     finalCount:1, finalists:[], ptr:0,
-    used:{main:{},final:{}}, live:null, order:keep&&keep.order||null, drawn:keep&&keep.drawn||[],
+    used:{main:{},final:{}}, live:null, qv:QV, order:keep&&keep.order||null, drawn:keep&&keep.drawn||[],
     questions:keep?keep.questions:clone(DEFAULT_Q)};
 }
 let S; try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S||!S.questions||!S.questions.main) S=fresh();
 if(S.phase==='setup') S.finalCount=1;
+if((S.qv||0)<QV){S.questions.main=clone(DEFAULT_Q.main);S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 try{if(!localStorage.getItem('hw-names-v2')){if(S.phase==='setup'){S.teams=DEFAULT_NAMES.map(n=>({name:n,main:0,final:0}));S.order=null;localStorage.setItem(KEY,JSON.stringify(S))} localStorage.setItem('hw-names-v2','1')}}catch(e){}
 const ROLE='host'; let entered=S.phase!=='setup';
 let REMOTE={state:null,main:null,final:null};
@@ -893,7 +898,7 @@ function renderModal(){
   let h=`<div class="overlay" role="dialog" aria-modal="true" style="${gv(L.ci)}"><div class="dlg">
    <div class="qhead"><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><span class="meta">${esc(c.icon||'')} ${esc(c.name)} · ${L.v} оноо</span><span class="team"><span class="tlab">Хариулах баг:</span> <span class="gold">${esc(t.name)}</span></span></div>
    <div class="beers" aria-label="${L.v} шар айраг">${mugs(L.v)}</div></div>
-   <div class="qbody ${vis?'has-vis':''}"><p class="qtext">${esc(it.q)}</p>${vis}</div>
+   <div class="qbody ${vis?'has-vis':''}"><div class="qcol"><p class="qtext">${esc(it.q)}</p>${it.note?`<span class="qnote">${esc(it.note)}</span>`:''}</div>${vis}</div>
    ${link?`<div class="vislink"><a class="btn small" href="${esc(link)}" target="_blank" rel="noopener">Киноны хэсгийг нээх ↗</a></div>`:''}
    <div class="answers a${n}">`;
   it.a.slice(0,n).forEach((a,i)=>{
@@ -914,7 +919,7 @@ function renderModal(){
   else if(L.stage==='locked') h+= host
     ?`<span class="hint">Байрлал түгжигдлээ. Бэлэн болмогц хариуг нээнэ.</span><div class="acts"><button class="btn" data-act="unlock">Засах</button><button class="btn primary" data-act="reveal">Хариу нээх</button></div>`
     :`<span class="hint">Байрлал түгжигдлээ. Хариуг удахгүй нээнэ…</span>`;
-  else h+=`<span class="hint">Зөв хариулт: ${LET[it.c]}. ${esc(it.a[it.c])}</span>${host?'<div class="acts"><button class="btn primary" data-act="commit">Үргэлжлүүлэх</button></div>':''}`;
+  else h+=`<span class="hint">Зөв хариулт: ${LET[it.c]}. ${esc(it.a[it.c])}${it.expl?`<br><small>${esc(it.expl)}</small>`:''}</span>${host?'<div class="acts"><button class="btn primary" data-act="commit">Үргэлжлүүлэх</button></div>':''}`;
   h+=`</div></div></div>`;
   const oldVis=root.querySelector('.vis[data-key]');
   root.innerHTML=h;
@@ -952,7 +957,7 @@ function openEdit(ci,v){const r=round(S);const c=S.questions[r][ci];E={r,ci,v,na
 function readEditor(){
   if(!E) return; const g=id=>document.getElementById(id);
   if(g('e-name')) E.name=g('e-name').value; if(g('e-icon')) E.icon=g('e-icon').value;
-  if(g('e-q')) E.q=g('e-q').value; if(g('e-pic')) E.pic=g('e-pic').value; if(g('e-link')) E.link=g('e-link').value;
+  if(g('e-q')) E.q=g('e-q').value; if(g('e-pic')) E.pic=g('e-pic').value; if(g('e-link')) E.link=g('e-link').value; if(g('e-note')) E.note=g('e-note').value; if(g('e-expl')) E.expl=g('e-expl').value;
   E.a=Array.from({length:nAns(E.v)},(_,i)=>g('e-a'+i)?g('e-a'+i).value:(E.a[i]||''));
   const sel=document.querySelector('input[name="e-c"]:checked'); if(sel) E.c=+sel.value;
 }
@@ -980,6 +985,9 @@ function editorHTML(){
      ${E.img?'<button class="btn small warn" data-act="eimgdel">Зураг хасах</button>':''}</div></div>
    <label class="f">Эсвэл киноны хэсгийн холбоос (шинэ цонхонд нээгдэнэ)<input type="url" id="e-link" value="${esc(E.link||'')}" placeholder="https://www.youtube.com/watch?v=…"></label>
    <div><a class="btn small" href="${esc(search)}" target="_blank" rel="noopener">YouTube-ээс хэсэг хайх ↗</a></div>
+   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
+    <label class="f">Нэмэлт / Challenge (асуулт дээр харагдана)<input type="text" id="e-note" value="${esc(E.note||'')}" placeholder="жишээ нь Нэмэлт: +1 shot tequila"></label>
+    <label class="f">Тайлбар (хариу нээгдэхэд харагдана)<input type="text" id="e-expl" value="${esc(E.expl||'')}"></label></div>
    <label class="f">Эможи зураг (видео, зураг байхгүй үед харагдана)<input type="text" id="e-pic" value="${esc(E.pic||'')}" placeholder="жишээ нь 🦈🏖️🚤"></label>
    ${E.busy||E.msg?`<p class="note" role="status">${E.busy?'Файлыг хадгалж байна…':esc(E.msg)}</p>`:''}
    <div class="f" style="gap:8px"><span>Хариултууд (зөвийг нь сонгоно)</span>
@@ -993,7 +1001,7 @@ function saveEdit(){
   const n=nAns(E.v), c=S.questions[E.r][E.ci];
   c.name=E.name.trim()||c.name; c.icon=E.icon.trim();
   const q={q:E.q.trim()||'—',a:Array.from({length:n},(_,i)=>(E.a[i]||'').trim()||'—'),c:E.c||0,pic:(E.pic||'').trim()};
-  if(E.img) q.img=E.img; if(E.vid) q.vid=E.vid; if(E.aud) q.aud=E.aud;
+  if(E.img) q.img=E.img; if(E.vid) q.vid=E.vid; if(E.aud) q.aud=E.aud; if((E.note||'').trim()) q.note=E.note.trim(); if((E.expl||'').trim()) q.expl=E.expl.trim();
   const lk=safeUrl((E.link||'').trim()); if(lk) q.link=lk;
   c.qs[E.v]=q; const r=E.r; E=null; persist(r); render();
 }
@@ -1071,7 +1079,7 @@ document.addEventListener('click',e=>{
     case 'eimgdel': readEditor(); delete E.img; E.msg=''; renderModal(); break;
     case 'evdel': readEditor(); delete E.vid; E.msg=''; renderModal(); break;
     case 'eadel': readEditor(); delete E.aud; E.msg=''; renderModal(); break;
-    case 'edefault': { readEditor(); const d=DEFAULT_Q[E.r][E.ci]; if(d){delete E.img; delete E.vid; delete E.aud; E.link=''; Object.assign(E,clone(d.qs[E.v]),{name:d.name,icon:d.icon,msg:''}); renderModal()} break; }
+    case 'edefault': { readEditor(); const d=DEFAULT_Q[E.r][E.ci]; if(d){delete E.img; delete E.vid; delete E.aud; E.link=''; E.note=''; E.expl=''; Object.assign(E,clone(d.qs[E.v]),{name:d.name,icon:d.icon,msg:''}); renderModal()} break; }
     case 'startfinal': if(S.phase!=='qualify') break; S.teams.forEach(t=>t.final=0); S.used.final={}; S.phase='final'; S.ptr=0; persist(); render(); break;
   }
 });
