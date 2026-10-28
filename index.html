@@ -422,16 +422,16 @@ const DEFAULT_Q={
    2:Q('Halloween-ий үеэр хүмүүс хулууг ухаж, дотор нь гэрэл хийж ямар нэртэй чимэглэл хийдэг вэ?',["Jack-o'-lantern",'Pumpkin King','Ghost Light','Witch Lamp'],0),
    3:Q('Ирланд цагаачид Хэллоуины заншлыг Америкт өргөн түгээсэн нь ямар үйл явдлын дараа болсон бэ?',['Төмсний их өлсгөлөн (1840-өөд)','Америкийн иргэний дайн','Калифорнийн алтны халуурал'],0),
    4:Q('Halloween-ы өмнөх өдөр буюу 10-р сарын 30-ныг зарим газарт юу гэж нэрлэдэг вэ?',['Black Friday','Mischief Night','Ghost Sunday'],1),
-   5:Q('Bram Stoker-ийн "Dracula" роман хэдэн онд анх хэвлэгдсэн бэ?',['1886','1897'],1,'',{note:'+1 tequila-тай асуулт'})}},
+   5:Q('Bram Stoker-ийн "Dracula" роман хэдэн онд анх хэвлэгдсэн бэ?',['1886','1897'],1,'',{note:'+1 tequila shot-тай асуулт'})}},
   {name:'Хаана байнаа би?',qs:{
    2:Q('Дэлхийн хамгийн том далай аль вэ?',['Атлантын далай','Энэтхэгийн далай','Номхон далай','Хойд мөсөн далай'],2),
    3:Q('Дэлхийн хамгийн гүн далайн цэг аль вэ?',['Тонгагийн хонхор','Challenger Deep','Японы хонхор'],1),
-   4:Q('Экваторын шугам хэдэн тивийг дайран өнгөрдөг вэ?',['2','3','4'],1,'',{note:'+1 tequila-тай асуулт'}),
+   4:Q('Экваторын шугам хэдэн тивийг дайран өнгөрдөг вэ?',['2','3','4'],1,'',{note:'+1 tequila shot-тай асуулт'}),
    5:Q('Аль улс хамгийн олон цагийн бүсийг хамардаг вэ?',['ОХУ','Франц'],1,'',{expl:'Францын хилийн чанад дахь нутаг дэвсгэрүүдийг тооцвол дэлхий даяар хамгийн олон цагийн бүсийг хамардаг.'})}},
   {name:'Нүднээс од харвалаа',qs:{
    2:Q('Нарны аймгийн аль гараг цагирагтай гэдгээрээ хамгийн алдартай вэ?',['Санчир','Дэлхий','Ангараг','Буд'],0),
    3:Q('Нарны аймгийн хамгийн халуун гараг аль вэ?',['Буд','Сугар','Ангараг'],1),
-   4:Q('Нарны аймгийн хамгийн том галт уул болох Olympus Mons аль гараг дээр байдаг вэ?',['Дэлхий','Ангараг','Сугар'],1,'',{note:'+1 tequila-тай асуулт'}),
+   4:Q('Нарны аймгийн хамгийн том галт уул болох Olympus Mons аль гараг дээр байдаг вэ?',['Дэлхий','Ангараг','Сугар'],1,'',{note:'+1 tequila shot-тай асуулт'}),
    5:Q('Нарны аймгийн хамгийн том дагуул аль вэ?',['Титан','Ганимед'],1)}},
   {name:'Соёлтой уугчид',qs:{
    2:Q('Oktoberfest хэмээх алдарт баяр аль улсад үүссэн бэ?',['Франц','Герман','Итали','Испани'],1),
@@ -488,6 +488,7 @@ if(!S||!S.questions||!S.questions.main) S=fresh();
 if(S.phase==='setup') S.finalCount=1;
 try{if(!localStorage.getItem('hw-names-fun')){const RN={"Halloween-ы тухай": "Хайлмагны баяр", "Газарзүй": "Хаана байнаа би?", "Одон орон": "Нүднээс од харвалаа", "Соёл уламжлал": "Соёлтой уугчид", "Амьтны ертөнц": "Согтуу амьтны хүрээлэн", "Сонирхолтой баримтууд": "Тархины эс үлдсэн үү?", "Кино таавар": "Попкорн ба шар айраг", "Дуу хөгжим": "Согтуу караоке", "Хэллоуины холимог": "Коктейль холимог", "Аймшгийн оньсого": "Маргаашийн толгой өвдөлт"};['main','final'].forEach(r=>S.questions[r].forEach(c=>{if(RN[c.name]) c.name=RN[c.name]}));localStorage.setItem('hw-names-fun','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='Нэмэлт: +1 shot tequila') q.note='+1 tequila-тай асуулт'})));
+['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila-тай асуулт') q.note='+1 tequila shot-тай асуулт'})));
 if((S.qv||0)<QV){S.questions.main=clone(DEFAULT_Q.main);S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 try{if(!localStorage.getItem('hw-names-v2')){if(S.phase==='setup'){S.teams=DEFAULT_NAMES.map(n=>({name:n,main:0,final:0}));S.order=null;localStorage.setItem(KEY,JSON.stringify(S))} localStorage.setItem('hw-names-v2','1')}}catch(e){}
 const ROLE='host'; let entered=S.phase!=='setup';
@@ -996,7 +997,7 @@ function editorHTML(){
    <label class="f">Эсвэл киноны хэсгийн холбоос (шинэ цонхонд нээгдэнэ)<input type="url" id="e-link" value="${esc(E.link||'')}" placeholder="https://www.youtube.com/watch?v=…"></label>
    <div><a class="btn small" href="${esc(search)}" target="_blank" rel="noopener">YouTube-ээс хэсэг хайх ↗</a></div>
    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
-    <label class="f">Нэмэлт / Challenge (асуулт дээр харагдана)<input type="text" id="e-note" value="${esc(E.note||'')}" placeholder="жишээ нь +1 tequila-тай асуулт"></label>
+    <label class="f">Нэмэлт / Challenge (асуулт дээр харагдана)<input type="text" id="e-note" value="${esc(E.note||'')}" placeholder="жишээ нь +1 tequila shot-тай асуулт"></label>
     <label class="f">Тайлбар (хариу нээгдэхэд харагдана)<input type="text" id="e-expl" value="${esc(E.expl||'')}"></label></div>
    <label class="f">Эможи зураг (видео, зураг байхгүй үед харагдана)<input type="text" id="e-pic" value="${esc(E.pic||'')}" placeholder="жишээ нь 🦈🏖️🚤"></label>
    ${E.busy||E.msg?`<p class="note" role="status">${E.busy?'Файлыг хадгалж байна…':esc(E.msg)}</p>`:''}
