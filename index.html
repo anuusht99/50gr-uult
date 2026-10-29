@@ -376,6 +376,27 @@ textarea{min-height:4.5em;resize:vertical}
 .cat .catmv small{font-size:.62rem;font-weight:700;color:var(--good)}
 .cat.offcat{opacity:.5} .cat.offcat .catmv small{color:var(--muted)}
 .board .cat{flex-direction:column}
+.qright{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end}
+.timer{display:flex;align-items:center;gap:10px}
+.tring{--p:1;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;align-content:center;background:radial-gradient(closest-side,var(--sky-1) 78%,transparent 80% 100%),conic-gradient(var(--good) calc(var(--p)*360deg),rgba(255,255,255,.12) 0);transition:background .2s}
+.tring b{font-size:1.5rem;line-height:1;font-variant-numeric:tabular-nums} .tring small{font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.timer.low .tring{background:radial-gradient(closest-side,var(--sky-1) 78%,transparent 80% 100%),conic-gradient(var(--amber) calc(var(--p)*360deg),rgba(255,255,255,.12) 0)}
+.timer.low .tring b{color:var(--amber)}
+.timer.out .tring{background:radial-gradient(closest-side,var(--sky-1) 78%,transparent 80% 100%),conic-gradient(var(--bad) 360deg,var(--bad) 0);animation:tpulse .6s ease-in-out 3}
+.timer.out .tring b{color:var(--bad)}
+@keyframes tpulse{50%{transform:scale(1.12)}}
+.tbtns{display:flex;flex-direction:column;gap:4px}
+.qbody.media-first{grid-template-columns:minmax(0,1fr)}
+.qbody.media-first .vis{min-height:48vh} .qbody.media-first .vis video,.qbody.media-first .vis img{max-height:58vh}
+.openans{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:2px dashed var(--line);border-radius:16px;padding:1.1rem;margin-top:clamp(10px,2.5vh,28px)}
+.openans .lbl2{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.openans b{font-size:clamp(1.3rem,2.6vw,2.2rem)}
+.openans .beersall svg{width:30px;height:30px}
+.openans.ok{border:2px solid var(--good);background:rgba(98,240,164,.12)} .openans.ok b{color:var(--good)}
+.openans.no{border:2px solid var(--bad);background:rgba(255,107,122,.1)}
+.setup .gplan{font-size:.92rem;line-height:1.4}
+.setup .gchal{padding:9px 14px}
+@media (max-height:800px){.setup>.panel{gap:12px;padding-block:18px}.setup .g{padding:12px;gap:8px}.setup .ga{min-height:40px}}
 </style>
 
 </head>
@@ -421,7 +442,7 @@ const LET=['А','Б','В','Г'];
 const DEFAULT_NAMES=['T-i','Wakes us up on Payday','🍭 Sweet but Psycho','Мэсний иж бүрдэл','HR team'];
 const GRAD=[['#f58a8f','#b8407a'],['#a77cff','#5b2bb0'],['#f2a7b4','#c45a8a'],['#7f6bff','#3a2a9e'],['#ec6f78','#8e2a6e'],['#c58bff','#7a3fc4'],['#ff9fb1','#d0567a'],['#8fa2ff','#4a3bb5']];
 const Q=(q,a,c,pic,x)=>Object.assign({q,a,c,pic:pic||''},x||{});
-const QV=3;
+const QV=4;
 const DEFAULT_Q={
  main:[
   {name:'Хайлмагны баяр',qs:{
@@ -429,31 +450,31 @@ const DEFAULT_Q={
    3:Q('Ирланд цагаачид Хэллоуины заншлыг Америкт өргөн түгээсэн нь ямар үйл явдлын дараа болсон бэ?',['Төмсний их өлсгөлөн (1840-өөд)','Америкийн иргэний дайн','Калифорнийн алтны халуурал'],0),
    4:Q('Halloween-ы өмнөх өдөр буюу 10-р сарын 30-ныг зарим газарт юу гэж нэрлэдэг вэ?',['Black Friday','Mischief Night','Ghost Sunday'],1),
    5:Q('Bram Stoker-ийн "Dracula" роман хэдэн онд анх хэвлэгдсэн бэ?',['1886','1897'],1,'',{note:'Challenge: 1 shot tequila'})}},
-  {name:'Нэг л танил царай',qs:{
-   2:Q('Би Хогвартст сурдаг, духан дээрээ аянгын хэлбэртэй сорвитой, нүдний шил зүүдэг. Би хэн бэ?',['Харри Поттер','Рон Уизли','Драко Малфой','Невилл Лонгботтом'],0),
-   3:Q('Би 1997 оны "Titanic" кинонд Роузын дүрийг бүтээсэн. Би хэн бэ?',['Николь Кидман','Кейт Уинслет','Гвинет Пэлтроу'],1),
-   4:Q('Би Microsoft компанийг үүсгэн байгуулагчдын нэг, дараа нь эхнэртэйгээ хамт дэлхийн хамгийн том буяны сангийн нэгийг байгуулсан. Би хэн бэ?',['Стив Жобс','Марк Цукерберг','Билл Гейтс'],2),
-   5:Q('Би "Cast Away" кинонд эзгүй арал дээр Wilson нэртэй волейболын бөмбөгтэй найзалсан. Би хэн бэ?',['Мэтт Дэймон','Том Хэнкс'],1)}},
-  {name:'Оскарын төлөө ууя',qs:{
-   2:Q('"Titanic" (1997) кинонд Жак Доусоны дүрийг хэн бүтээсэн бэ?',['Брэд Питт','Жонни Депп','Леонардо ДиКаприо','Том Круз'],2),
-   3:Q('Halloween аймшгийн киноны цувралын алдарт масктай алуурчны нэр хэн бэ?',['Jason Voorhees','Freddy Krueger','Michael Myers'],2,'',{note:'Challenge: Багийн гишүүд хоорондоо юм ярьж болохгүй'}),
-   4:Q('"Joker" (2019) кинонд Joker-ийн бүжиглэн бууж буй алдарт шат аль хотод байдаг вэ?',['Чикаго','Нью-Йорк','Лос-Анжелес'],1),
-   5:Q('"Shrek" киноны анхны (англи) хувилбарт Шрекийн дуу хоолойг хэн хийсэн бэ?',['Эдди Мёрфи','Майк Майерс'],1)}},
+  {name:'Нэг л танил царай',open:true,qs:{
+   2:Q('Би Хогвартст сурдаг, духан дээрээ аянгын хэлбэртэй сорвитой, нүдний шил зүүдэг. Би хэн бэ?',['Харри Поттер'],0),
+   3:Q('Би 1997 оны "Titanic" кинонд Роузын дүрийг бүтээсэн. Би хэн бэ?',['Кейт Уинслет'],0,'',{note:'Challenge: 1 shot tequila'}),
+   4:Q('Би Microsoft компанийг үүсгэн байгуулагчдын нэг, дараа нь эхнэртэйгээ хамт дэлхийн хамгийн том буяны сангийн нэгийг байгуулсан. Би хэн бэ?',['Билл Гейтс'],0),
+   5:Q('Би "Cast Away" кинонд эзгүй арал дээр Wilson нэртэй волейболын бөмбөгтэй найзалсан. Би хэн бэ?',['Том Хэнкс'],0,'',{note:'Challenge: 2 shot tequila'})}},
+  {name:'Оскарын төлөө ууя',open:true,qs:{
+   2:Q('"Titanic" (1997) кинонд Жак Доусоны дүрийг хэн бүтээсэн бэ?',['Леонардо ДиКаприо'],0),
+   3:Q('Halloween аймшгийн киноны цувралын алдарт масктай алуурчны нэр хэн бэ?',['Michael Myers'],0,'',{note:'Challenge: Багийн гишүүд хоорондоо юм ярьж болохгүй'}),
+   4:Q('"Joker" (2019) кинонд Joker-ийн бүжиглэн бууж буй алдарт шат аль хотод байдаг вэ?',['Нью-Йорк (Бронкс)'],0),
+   5:Q('"Shrek" киноны анхны (англи) хувилбарт Шрекийн дуу хоолойг хэн хийсэн бэ?',['Майк Майерс'],0,'',{note:'Challenge: 2 shot tequila'})}},
   {name:'Согтуу караоке',qs:{
    2:Q('Клипэндээ зомбинуудтай бүжиглэдэг "Thriller" дууг хэн дуулсан бэ?',['Майкл Жексон','Мадонна','Принс','Элвис Пресли'],0),
    3:Q('"Bohemian Rhapsody" дууг аль хамтлаг дуулсан бэ?',['The Beatles','Queen','Led Zeppelin'],1),
-   4:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Борис Карлофф','Кристофер Ли','Винсент Прайс'],2),
-   5:Q('Хэллоуины сонгодог "Monster Mash" (1962) дууг хэн дуулсан бэ?',['Alice Cooper','Bobby "Boris" Pickett'],1)}},
+   4:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Борис Карлофф','Кристофер Ли','Винсент Прайс'],2,'',{note:'Challenge: 1 shot tequila'}),
+   5:Q('Хэллоуины сонгодог "Monster Mash" (1962) дууг хэн дуулсан бэ?',['Alice Cooper','Bobby "Boris" Pickett'],1,'',{note:'Challenge: 2 shot tequila'})}},
   {name:'Хаана байнаа би?',qs:{
    2:Q('Дэлхийн хамгийн том далай аль вэ?',['Атлантын далай','Энэтхэгийн далай','Номхон далай','Хойд мөсөн далай'],2),
    3:Q('Дэлхийн хамгийн гүн далайн цэг аль вэ?',['Тонгагийн хонхор','Challenger Deep','Японы хонхор'],1),
    4:Q('Экваторын шугам хэдэн тивийг дайран өнгөрдөг вэ?',['2','3','4'],1,'',{note:'Challenge: 1 shot tequila'}),
-   5:Q('Аль улс хамгийн олон цагийн бүсийг хамардаг вэ?',['ОХУ','Франц'],1,'',{expl:'Францын хилийн чанад дахь нутаг дэвсгэрүүдийг тооцвол дэлхий даяар хамгийн олон цагийн бүсийг хамардаг.'})}},
+   5:Q('Аль улс хамгийн олон цагийн бүсийг хамардаг вэ?',['ОХУ','Франц'],1,'',{expl:'Францын хилийн чанад дахь нутаг дэвсгэрүүдийг тооцвол дэлхий даяар хамгийн олон цагийн бүсийг хамардаг.',note:'Challenge: 2 shot tequila'})}},
   {name:'Согтуу амьтны хүрээлэн',qs:{
    2:Q('Аль амьтан гурван зүрхтэй вэ?',['Дельфин','Наймаалж','Акул','Мэлхий'],1),
-   3:Q('Аль амьтны цус цэнхэр өнгөтэй байдаг вэ?',['Халим','Наймаалж','Мэлхий'],1),
+   3:Q('Аль амьтны цус цэнхэр өнгөтэй байдаг вэ?',['Халим','Наймаалж','Мэлхий'],1,'',{note:'Challenge: 1 shot tequila'}),
    4:Q('Аль амьтны хурууны хээ хүнийхтэй маш төстэй вэ?',['Коала','Панда','Имж'],0),
-   5:Q('Аль амьтан унтаж байхдаа ч нэг тархины хагас бөмбөлгөө сэрүүн байлгаж чаддаг вэ?',['Дельфин','Сарьсан багваахай'],0)}},
+   5:Q('Аль амьтан унтаж байхдаа ч нэг тархины хагас бөмбөлгөө сэрүүн байлгаж чаддаг вэ?',['Дельфин','Сарьсан багваахай'],0,'',{note:'Challenge: 2 shot tequila'})}},
   {name:'Нүднээс од харвалаа',qs:{
    2:Q('Нарны аймгийн аль гараг цагирагтай гэдгээрээ хамгийн алдартай вэ?',['Санчир','Дэлхий','Ангараг','Буд'],0),
    3:Q('Нарны аймгийн хамгийн халуун гараг аль вэ?',['Буд','Сугар','Ангараг'],1),
@@ -501,7 +522,7 @@ try{if(!localStorage.getItem('hw-names-fun')){const RN={"Halloween-ы тухай
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='Нэмэлт: +1 shot tequila') q.note='+1 tequila-тай асуулт'})));
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila-тай асуулт') q.note='+1 tequila shot-тай асуулт'})));
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila shot-тай асуулт') q.note='Challenge: 1 shot tequila'})));
-if((S.qv||0)<QV){S.questions.main=clone(DEFAULT_Q.main);S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+if((S.qv||0)<QV){const OLD={};(S.questions.main||[]).forEach(c=>OLD[c.name]=c);const NB=clone(DEFAULT_Q.main);NB.forEach(c=>{const o=OLD[c.name];if(o)[2,3,4,5].forEach(v=>{const a=o.qs&&o.qs[v];if(a)['img','vid','aud','link'].forEach(k=>{if(a[k])c.qs[v][k]=a[k]})})});S.questions.main=NB;S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 try{if(!localStorage.getItem('hw-animals-in')){const q=S.questions.main,ai=q.findIndex(c=>c.name==='Согтуу амьтны хүрээлэн'),si=q.findIndex(c=>c.name==='Нүднээс од харвалаа');if(ai>-1&&si>-1&&ai>si){const [c]=q.splice(ai,1);q.splice(si,0,c)}localStorage.setItem('hw-animals-in','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 try{if(!localStorage.getItem('hw-names-v2')){if(S.phase==='setup'){S.teams=DEFAULT_NAMES.map(n=>({name:n,main:0,final:0}));S.order=null;localStorage.setItem(KEY,JSON.stringify(S))} localStorage.setItem('hw-names-v2','1')}}catch(e){}
 const ROLE='host'; let entered=S.phase!=='setup';
@@ -543,6 +564,8 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const mug='<svg><use href="#mug"/></svg>';
 const mugs=n=>Array.from({length:n},()=>mug).join('');
 const nAns=v=>v===5?2:v===2?4:3;
+const isOpen=(G,r,ci)=>!!(G.questions[r][ci]&&G.questions[r][ci].open);
+const hasMedia=it=>!!(it&&(it.vid||it.aud||it.img));
 const gv=ci=>{const g=GRAD[ci%GRAD.length];return `--c1:${g[0]};--c2:${g[1]}`};
 const round=G=>G.phase==='final'?'final':'main';
 const order=G=>G.phase==='final'?G.finalists:(G.order&&G.order.length===G.teams.length?G.order:G.teams.map((_,i)=>i));
@@ -572,8 +595,9 @@ function rulesHTML(G){
     <figure class="g"><div class="gbox three">${box('А',2,'win','<span class="gp">+2</span>')}${box('Б',1,'drink','<span class="gd">ууна</span>')}${box('?',0,'lose')}</div>
       <figcaption><b>Зөв хариулт дээр тавьсан шар айрагны тоо = Багт нэмэгдэх оноо</b>Буруу хариулт дээр тавьсан шар айргийг ууна.</figcaption></figure>
   </div>
-  <div class="gchal"><div class="gchal-ic">${mugs(3)}${SHOT}</div><div><b>Зарим асуултад нэмэлт challenge орсон байна</b><span>Жишээлбэл 4 онооны асуулт сонговол 4 ундааны 3 нь шар айраг, 1 нь tequila shot байж болно. Shot нь шар айрагны тоондоо багтана.</span></div></div>
-  <p class="gplan"><b>${n} баг</b> → <b>${mc} ангилал × 4 = ${mq} асуулт</b>, баг бүр <b>${mq/n} удаа</b> гарна · Хамгийн өндөр оноотой <b>1 баг ялна</b> · Тэнцвэл тэнцсэн багууд шийдвэрлэх тойрог тоглоно.</p>`;
+  <div class="gchal"><div class="gchal-ic">${mugs(3)}${SHOT}</div><div><b>Зарим асуултад нэмэлт challenge орсон байна</b><span>Жишээлбэл 4 онооны асуулт сонговол 4 ундааны 3 нь шар айраг, 1 нь tequila shot, эсвэл 2 нь шар айраг, 2 нь tequila shot байж болно. Shot нь шар айрагны тоондоо багтана.</span></div></div>
+  <p class="gplan"><b>${n} баг</b> → <b>${mc} ангилал × 4 = ${mq} асуулт</b>, баг бүр <b>${mq/n} удаа</b> гарна · Хамгийн өндөр оноотой <b>1 баг ялна</b> · Тэнцвэл тэнцсэн багууд шийдвэрлэх тойрог тоглоно.</p>
+  <p class="gplan">⏱ Хариулах хугацаа <b>40 секунд</b> · <b>${G.questions.main.filter((c,i)=>c.open&&i<mc).map(c=>esc(c.name)).join(', ')||'Зарим'}</b> ангилалд сонголт байхгүй: эхлээд бичлэг үзээд асуулт гарч, баг шууд хариулна. Зөв бол бүх шар айраг оноо болно, буруу бол бүгдийг ууна.</p>`;
 }
 
 /* ================= screens ================= */
@@ -915,6 +939,15 @@ function visHTML(it){
   if(it.pic) return `<div class="vis" data-key="${key}"><span class="lbl">Зургаар таа</span><div class="emo">${esc(it.pic)}</div></div>`;
   return '';
 }
+const TMAX=40; const TMR={left:TMAX,run:false,iv:0,end:0};
+function tReset(){clearInterval(TMR.iv);TMR.left=TMAX;TMR.run=false;tPaint()}
+function tStart(){if(TMR.run) return; if(TMR.left<=0) TMR.left=TMAX; TMR.run=true; TMR.end=Date.now()+TMR.left*1000;
+  clearInterval(TMR.iv); TMR.iv=setInterval(()=>{TMR.left=Math.max(0,Math.ceil((TMR.end-Date.now())/1000)); if(TMR.left<=0){clearInterval(TMR.iv);TMR.run=false;beep()} tPaint()},200); tPaint()}
+function tPause(){if(!TMR.run) return; clearInterval(TMR.iv); TMR.run=false; TMR.left=Math.max(0,Math.ceil((TMR.end-Date.now())/1000)); tPaint()}
+let ACTX=null;
+function beep(){try{ACTX=ACTX||new (window.AudioContext||window.webkitAudioContext)(); [0,.25,.5].forEach(t=>{const o=ACTX.createOscillator(),g=ACTX.createGain();o.type='square';o.frequency.value=t<.5?660:440;g.gain.setValueAtTime(.12,ACTX.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ACTX.currentTime+t+.22);o.connect(g).connect(ACTX.destination);o.start(ACTX.currentTime+t);o.stop(ACTX.currentTime+t+.24)})}catch(e){}}
+function timerHTML(){return `<div class="timer" id="timer"><div class="tring" style="--p:${TMR.left/TMAX}"><b id="tnum">${TMR.left}</b><small>сек</small></div><div class="tbtns">${TMR.run?'<button class="btn small" data-act="tpause">Зогсоох</button>':`<button class="btn small primary" data-act="tstart">${TMR.left<TMAX&&TMR.left>0?'Үргэлжлүүлэх':'Цаг эхлүүлэх'}</button>`}${TMR.left<TMAX?'<button class="btn small" data-act="treset">Дахин</button>':''}</div></div>`}
+function tPaint(){const el=document.getElementById('timer'); if(!el) return; el.outerHTML=timerHTML(); const n=document.getElementById('timer'); if(n){n.classList.toggle('low',TMR.left<=10&&TMR.left>0); n.classList.toggle('out',TMR.left<=0)}}
 function renderModal(){
   const root=document.getElementById('modal');
   if(E){root.innerHTML=editorHTML();hydrateMedia(root);return}
@@ -924,14 +957,16 @@ function renderModal(){
   const c=G.questions[L.r][L.ci]; if(!c){root.innerHTML='';return}
   const it=c.qs[L.v], n=nAns(L.v), t=G.teams[L.team];
   const sum=L.alloc.reduce((a,b)=>a+b,0), chk=check(L), rev=L.stage==='revealed';
-  const vis=visHTML(it), link=safeUrl(it.link);
+  const vis=visHTML(it), link=safeUrl(it.link), open=!!L.open, mediaOnly=open&&L.stage==='media';
   let h=`<div class="overlay" role="dialog" aria-modal="true" style="${gv(L.ci)}"><div class="dlg">
    <div class="qhead"><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><span class="meta">${esc(c.icon||'')} ${esc(c.name)} · ${L.v} оноо</span><span class="team"><span class="tlab">Хариулах баг:</span> <span class="gold">${esc(t.name)}</span></span></div>
-   <div class="beers" aria-label="${L.v} шар айраг">${mugs(L.v)}</div></div>
-   <div class="qbody ${vis?'has-vis':''}"><div class="qcol"><p class="qtext">${esc(it.q)}</p>${it.note?`<span class="qnote">${esc(it.note)}</span>`:''}</div>${vis}</div>
+   <div class="qright">${mediaOnly||rev?'':timerHTML()}<div class="beers" aria-label="${L.v} шар айраг">${mugs(L.v)}</div></div></div>
+   ${mediaOnly?`<div class="qbody media-first">${vis}</div>`:`<div class="qbody ${vis?'has-vis':''}"><div class="qcol"><p class="qtext">${esc(it.q)}</p>${it.note?`<span class="qnote">${esc(it.note)}</span>`:''}</div>${vis}</div>`}
    ${link?`<div class="vislink"><a class="btn small" href="${esc(link)}" target="_blank" rel="noopener">Киноны хэсгийг нээх ↗</a></div>`:''}
-   <div class="answers a${n}">`;
-  it.a.slice(0,n).forEach((a,i)=>{
+   ${open?'':`<div class="answers a${n}">`}`;
+  if(open){
+    if(!mediaOnly) h+=rev?`<div class="openans ${L.ok?'ok':'no'}"><span class="lbl2">Зөв хариулт</span><b>${esc(it.a[0])}</b></div>`:`<div class="openans wait"><span class="lbl2">Хариултын сонголт байхгүй</span><b>Баг хариултаа шууд хэлнэ</b><span class="beersall">${mugs(L.v)}</span></div>`;
+  } else it.a.slice(0,n).forEach((a,i)=>{
     const cls=rev?(i===it.c?'ok':'no'):'';
     h+=`<div class="ans ${cls}"><div class="lt"><span class="letter">${LET[i]}</span><span class="txt">${esc(a)}</span></div>
      <div class="stack">${L.alloc[i]?mugs(L.alloc[i]):'<span class="empty">хоосон</span>'}</div>`;
@@ -939,10 +974,14 @@ function renderModal(){
       ${L.v===5?`<button class="btn small" data-act="all" data-i="${i}">Бүгдийг энд</button>`:''}</div>`;
     h+=`</div>`;
   });
-  h+=`</div>`;
-  if(rev){const p=L.alloc[it.c], d=L.v-p; h+=`<div class="resrow"><div class="result ${p?'win':'lose'}">${p?`${esc(t.name)} баг оноо авлаа! +${p}`:`${esc(t.name)} баг оноо авсангүй`}</div>${d?`<div class="drink">${mugs(d)}<span>Буруу хариулт дээрх ${d} шар айргийг ууна!</span></div>`:''}</div>`;}
+  if(!open) h+=`</div>`;
+  if(rev&&open){h+=`<div class="resrow">${L.ok?`<div class="result win">${esc(t.name)} баг оноо авлаа! +${L.v}</div>`:`<div class="result lose">${esc(t.name)} баг оноо авсангүй</div><div class="drink">${mugs(L.v)}<span>${L.v} шар айргаа ууна!</span></div>`}</div>`;}
+  else if(rev){const p=L.alloc[it.c], d=L.v-p; h+=`<div class="resrow"><div class="result ${p?'win':'lose'}">${p?`${esc(t.name)} баг оноо авлаа! +${p}`:`${esc(t.name)} баг оноо авсангүй`}</div>${d?`<div class="drink">${mugs(d)}<span>Буруу хариулт дээрх ${d} шар айргийг ууна!</span></div>`:''}</div>`;}
   h+=`<div class="qfoot">`;
-  if(L.stage==='place') h+= host
+  if(open&&L.stage==='media') h+=`<span class="hint">Бичлэгийг үзсэний дараа асуултыг гаргана.</span><div class="acts"><button class="btn" data-act="cancel">Буцах</button><button class="btn primary" data-act="showq">Асуулт гаргах</button></div>`;
+  else if(open&&L.stage==='ask') h+=`<span class="hint">Баг хариултаа хэлсний дараа шийднэ үү.</span><div class="acts"><button class="btn" data-act="cancel">Буцах</button><button class="btn warn" data-act="judge" data-i="0">✗ Буруу</button><button class="btn primary" data-act="judge" data-i="1">✓ Зөв</button></div>`;
+  else if(open) h+=`<span class="hint">${it.expl?esc(it.expl):''}</span>${host?'<div class="acts"><button class="btn primary" data-act="commit">Үргэлжлүүлэх</button></div>':''}`;
+  else if(L.stage==='place') h+= host
     ?`<span class="count">${sum} <span class="of">/ ${L.v} шар айраг</span></span><span class="hint ${chk.ok?'okk':''}">${chk.msg}</span>
       <div class="acts"><button class="btn" data-act="cancel">Буцах</button><button class="btn primary" data-act="lock" ${chk.ok?'':'disabled'}>Түгжих</button></div>`
     :`<span class="count">${sum} <span class="of">/ ${L.v} шар айраг тавьсан</span></span><span class="hint">Баг шар айргаа байрлуулж байна…</span>`;
@@ -957,12 +996,13 @@ function renderModal(){
   if(oldVis&&newVis&&oldVis.dataset.key===newVis.dataset.key) newVis.replaceWith(oldVis); else hydrateMedia(root);
 }
 function openQ(ci,v){
-  const r=round(S);
-  S.live={r,ci,v,team:cur(S),alloc:Array(nAns(v)).fill(0),stage:'place'};
-  persist(); render();
+  const r=round(S), it=S.questions[r][ci].qs[v], open=isOpen(S,r,ci);
+  S.live={r,ci,v,team:cur(S),alloc:Array(open?1:nAns(v)).fill(0),stage:open?(hasMedia(it)?'media':'ask'):'place',open};
+  tReset(); persist(); render();
 }
 function commit(){
-  const L=S.live, it=S.questions[L.r][L.ci].qs[L.v], pts=L.alloc[it.c];
+  const L=S.live, it=S.questions[L.r][L.ci].qs[L.v], pts=L.open?(L.ok?L.v:0):L.alloc[it.c];
+  tReset();
   S.used[L.r][L.ci+'-'+L.v]={team:L.team,pts};
   S.teams[L.team][L.r]+=pts;
   S.ptr=(S.ptr+1)%order(S).length;
@@ -983,16 +1023,17 @@ function commit(){
 }
 
 /* ================= editor ================= */
-function openEdit(ci,v){const r=round(S);const c=S.questions[r][ci];E={r,ci,v,name:c.name,icon:c.icon||'',...clone(c.qs[v]),busy:false,msg:''};render()}
+function openEdit(ci,v){const r=round(S);const c=S.questions[r][ci];E={r,ci,v,open:!!c.open,name:c.name,icon:c.icon||'',...clone(c.qs[v]),busy:false,msg:''};render()}
 function readEditor(){
   if(!E) return; const g=id=>document.getElementById(id);
   if(g('e-name')) E.name=g('e-name').value; if(g('e-icon')) E.icon=g('e-icon').value;
   if(g('e-q')) E.q=g('e-q').value; if(g('e-pic')) E.pic=g('e-pic').value; if(g('e-link')) E.link=g('e-link').value; if(g('e-note')) E.note=g('e-note').value; if(g('e-expl')) E.expl=g('e-expl').value;
-  E.a=Array.from({length:nAns(E.v)},(_,i)=>g('e-a'+i)?g('e-a'+i).value:(E.a[i]||''));
+  E.a=Array.from({length:Math.max(eCount(),E.a.length)},(_,i)=>g('e-a'+i)?g('e-a'+i).value:(E.a[i]||''));
   const sel=document.querySelector('input[name="e-c"]:checked'); if(sel) E.c=+sel.value;
 }
+const eCount=()=>E.open?1:nAns(E.v);
 function editorHTML(){
-  const n=nAns(E.v), canUp=!!(ASSETS&&CAN_SYNC);
+  const n=eCount(), canUp=!!(ASSETS&&CAN_SYNC);
   const search='https://www.youtube.com/results?search_query='+encodeURIComponent((E.a[E.c]||E.q)+' scene');
   return `<div class="overlay" role="dialog" aria-modal="true" style="${gv(E.ci)}"><div class="dlg" style="max-width:840px">
    <div class="qhead"><span class="meta">Асуулт засах · ${E.v} оноо · ${n} хариулт</span></div>
@@ -1020,15 +1061,16 @@ function editorHTML(){
     <label class="f">Тайлбар (хариу нээгдэхэд харагдана)<input type="text" id="e-expl" value="${esc(E.expl||'')}"></label></div>
    <label class="f">Эможи зураг (видео, зураг байхгүй үед харагдана)<input type="text" id="e-pic" value="${esc(E.pic||'')}" placeholder="жишээ нь 🦈🏖️🚤"></label>
    ${E.busy||E.msg?`<p class="note" role="status">${E.busy?'Файлыг хадгалж байна…':esc(E.msg)}</p>`:''}
-   <div class="f" style="gap:8px"><span>Хариултууд (зөвийг нь сонгоно)</span>
-   ${Array.from({length:n},(_,i)=>`<div class="edit-ans"><input type="radio" name="e-c" id="e-c${i}" value="${i}" ${E.c===i?'checked':''} aria-label="Зөв хариулт ${LET[i]}"><input type="text" id="e-a${i}" value="${esc(E.a[i]||'')}" placeholder="${LET[i]} хариулт"></div>`).join('')}</div>
+   <label class="f" style="flex-direction:row;align-items:center;gap:8px;color:var(--bone)"><input type="checkbox" id="e-open" ${E.open?'checked':''}> Энэ ангилал хариултын сонголтгүй (бичлэг → асуулт → баг шууд хариулна)</label>
+   ${E.open?`<label class="f">Зөв хариулт<input type="text" id="e-a0" value="${esc(E.a[0]||'')}"></label>`:`<div class="f" style="gap:8px"><span>Хариултууд (зөвийг нь сонгоно)</span>
+   ${Array.from({length:n},(_,i)=>`<div class="edit-ans"><input type="radio" name="e-c" id="e-c${i}" value="${i}" ${E.c===i?'checked':''} aria-label="Зөв хариулт ${LET[i]}"><input type="text" id="e-a${i}" value="${esc(E.a[i]||'')}" placeholder="${LET[i]} хариулт"></div>`).join('')}</div>`}
    <div class="qfoot"><button class="btn small" data-act="edefault">Анхны асуултаар сэргээх</button>
    <div class="acts"><button class="btn" data-act="ecancel">Болих</button><button class="btn primary" data-act="esave" ${E.busy?'disabled':''}>Хадгалах</button></div></div>
   </div></div>`;
 }
 function saveEdit(){
   readEditor();
-  const n=nAns(E.v), c=S.questions[E.r][E.ci];
+  const n=eCount(), c=S.questions[E.r][E.ci]; c.open=!!E.open; if(E.open) E.c=0;
   c.name=E.name.trim()||c.name; c.icon=E.icon.trim();
   const q={q:E.q.trim()||'—',a:Array.from({length:n},(_,i)=>(E.a[i]||'').trim()||'—'),c:E.c||0,pic:(E.pic||'').trim()};
   if(E.img) q.img=E.img; if(E.vid) q.vid=E.vid; if(E.aud) q.aud=E.aud; if((E.note||'').trim()) q.note=E.note.trim(); if((E.expl||'').trim()) q.expl=E.expl.trim();
@@ -1079,6 +1121,9 @@ document.addEventListener('click',e=>{
   switch(a){
     case 'start': if(spinning) break; S.phase='main'; S.ptr=0; persist(); render(); break;
     case 'spin': spin(); break;
+    case 'tstart': tStart(); break;
+    case 'tpause': tPause(); break;
+    case 'treset': tReset(); break;
     case 'cmove': {const q=S.questions.main, j=i+(+b.dataset.d); if(j>=0&&j<q.length){[q[i],q[j]]=[q[j],q[i]]; persist('main'); render()}} break;
     case 'home': if(!spinning){entered=false; qedit=false; editing=false; render(); window.scrollTo(0,0)} break;
     case 'qedit': qedit=true; editing=true; render(); window.scrollTo(0,0); break;
@@ -1100,10 +1145,12 @@ document.addEventListener('click',e=>{
     case 'inc': if(L&&canInc(L,i)){L.alloc[i]++;persist();renderModal()} break;
     case 'dec': if(L&&L.alloc[i]>0){L.alloc[i]--;persist();renderModal()} break;
     case 'all': if(L){L.alloc=L.alloc.map((_,k)=>k===i?L.v:0);persist();renderModal()} break;
-    case 'cancel': S.live=null; persist(); render(); break;
+    case 'cancel': tReset(); S.live=null; persist(); render(); break;
     case 'lock': if(L&&check(L).ok){L.stage='locked';persist();renderModal()} break;
     case 'unlock': if(L){L.stage='place';persist();renderModal()} break;
-    case 'reveal': if(L){L.stage='revealed';persist();renderModal()} break;
+    case 'reveal': if(L){L.stage='revealed';tPause();persist();renderModal()} break;
+    case 'showq': if(L){L.stage='ask';tReset();persist();renderModal()} break;
+    case 'judge': if(L){L.ok=i===1;L.stage='revealed';tPause();persist();renderModal()} break;
     case 'commit': if(L) commit(); break;
     case 'ecancel': E=null; render(); break;
     case 'esave': if(E&&!E.busy) saveEdit(); break;
@@ -1118,6 +1165,7 @@ document.addEventListener('change',e=>{
   if(ROLE!=='host') return;
   const t=e.target, a=t.dataset.act;
   if(t.id==='e-file'&&t.files&&t.files[0]){onImage(t.files[0]);return}
+  if(t.id==='e-open'){readEditor();E.open=t.checked;if(E.open){const cv=E.a[E.c]||E.a[0]||'';E.a=[cv];E.c=0}renderModal();return}
   if(t.id==='e-vfile'&&t.files&&t.files[0]){onMedia(t.files[0],'vid');return}
   if(t.id==='e-afile'&&t.files&&t.files[0]){onMedia(t.files[0],'aud');return}
   if(a==='rename'){const i=+t.dataset.i; S.teams[i].name=t.value.trim()||S.teams[i].name; persist(); render(); return}
