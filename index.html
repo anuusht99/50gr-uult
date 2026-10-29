@@ -597,7 +597,7 @@ function rulesHTML(G){
   </div>
   <div class="gchal"><div class="gchal-ic">${mugs(3)}${SHOT}</div><div><b>Зарим асуултад нэмэлт challenge орсон байна</b><span>Жишээлбэл 4 онооны асуулт сонговол 4 ундааны 3 нь шар айраг, 1 нь tequila shot, эсвэл 2 нь шар айраг, 2 нь tequila shot байж болно. Shot нь шар айрагны тоондоо багтана.</span></div></div>
   <p class="gplan"><b>${n} баг</b> → <b>${mc} ангилал × 4 = ${mq} асуулт</b>, баг бүр <b>${mq/n} удаа</b> гарна · Хамгийн өндөр оноотой <b>1 баг ялна</b> · Тэнцвэл тэнцсэн багууд шийдвэрлэх тойрог тоглоно.</p>
-  <p class="gplan">⏱ Хариулах хугацаа <b>40 секунд</b> · <b>${G.questions.main.filter((c,i)=>c.open&&i<mc).map(c=>esc(c.name)).join(', ')||'Зарим'}</b> ангилалд сонголт байхгүй: эхлээд бичлэг үзээд асуулт гарч, баг шууд хариулна. Зөв бол бүх шар айраг оноо болно, буруу бол бүгдийг ууна.</p>`;
+  <p class="gplan">⏱ Хариулах хугацаа <b>20 секунд</b> · <b>${G.questions.main.filter((c,i)=>c.open&&i<mc).map(c=>esc(c.name)).join(', ')||'Зарим'}</b> ангилалд сонголт байхгүй: эхлээд бичлэг үзээд асуулт гарч, баг шууд хариулна. Зөв бол бүх шар айраг оноо болно, буруу бол бүгдийг ууна.</p>`;
 }
 
 /* ================= screens ================= */
@@ -939,7 +939,7 @@ function visHTML(it){
   if(it.pic) return `<div class="vis" data-key="${key}"><span class="lbl">Зургаар таа</span><div class="emo">${esc(it.pic)}</div></div>`;
   return '';
 }
-const TMAX=40; const TMR={left:TMAX,run:false,iv:0,end:0};
+const TMAX=20; const TMR={left:TMAX,run:false,iv:0,end:0};
 function tReset(){clearInterval(TMR.iv);TMR.left=TMAX;TMR.run=false;tPaint()}
 function tStart(){if(TMR.run) return; if(TMR.left<=0) TMR.left=TMAX; TMR.run=true; TMR.end=Date.now()+TMR.left*1000;
   clearInterval(TMR.iv); TMR.iv=setInterval(()=>{TMR.left=Math.max(0,Math.ceil((TMR.end-Date.now())/1000)); if(TMR.left<=0){clearInterval(TMR.iv);TMR.run=false;beep()} tPaint()},200); tPaint()}
@@ -947,7 +947,7 @@ function tPause(){if(!TMR.run) return; clearInterval(TMR.iv); TMR.run=false; TMR
 let ACTX=null;
 function beep(){try{ACTX=ACTX||new (window.AudioContext||window.webkitAudioContext)(); [0,.25,.5].forEach(t=>{const o=ACTX.createOscillator(),g=ACTX.createGain();o.type='square';o.frequency.value=t<.5?660:440;g.gain.setValueAtTime(.12,ACTX.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ACTX.currentTime+t+.22);o.connect(g).connect(ACTX.destination);o.start(ACTX.currentTime+t);o.stop(ACTX.currentTime+t+.24)})}catch(e){}}
 function timerHTML(){return `<div class="timer" id="timer"><div class="tring" style="--p:${TMR.left/TMAX}"><b id="tnum">${TMR.left}</b><small>сек</small></div><div class="tbtns">${TMR.run?'<button class="btn small" data-act="tpause">Зогсоох</button>':`<button class="btn small primary" data-act="tstart">${TMR.left<TMAX&&TMR.left>0?'Үргэлжлүүлэх':'Цаг эхлүүлэх'}</button>`}${TMR.left<TMAX?'<button class="btn small" data-act="treset">Дахин</button>':''}</div></div>`}
-function tPaint(){const el=document.getElementById('timer'); if(!el) return; el.outerHTML=timerHTML(); const n=document.getElementById('timer'); if(n){n.classList.toggle('low',TMR.left<=10&&TMR.left>0); n.classList.toggle('out',TMR.left<=0)}}
+function tPaint(){const el=document.getElementById('timer'); if(!el) return; el.outerHTML=timerHTML(); const n=document.getElementById('timer'); if(n){n.classList.toggle('low',TMR.left<=5&&TMR.left>0); n.classList.toggle('out',TMR.left<=0)}}
 function renderModal(){
   const root=document.getElementById('modal');
   if(E){root.innerHTML=editorHTML();hydrateMedia(root);return}
