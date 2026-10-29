@@ -899,15 +899,16 @@ function fireworks(){
   const burst=(x,y,c)=>{const n=70+Math.floor(Math.random()*50), c2=COLS[Math.floor(Math.random()*COLS.length)];
     for(let i=0;i<n;i++){const a=Math.PI*2*i/n, sp=2+Math.random()*4.5; FW.parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,dec:.008+Math.random()*.01,c:Math.random()<.7?c:c2,s:1.6+Math.random()*1.6})}
     pop(.12)};
+  let prev=performance.now();
   const step=now=>{
     if(!FW.on) return;
-    const el=now-FW.t0;
+    const el=now-FW.t0, k=Math.min(4,Math.max(.5,(now-prev)/16.7)); prev=now;
     if(el<9000&&now-FW.last>(el<1500?220:420)){FW.last=now; launch(); if(Math.random()<.35) launch()}
     ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='rgba(0,0,0,.22)'; ctx.fillRect(0,0,innerWidth,innerHeight);
     ctx.globalCompositeOperation='lighter';
-    FW.rockets=FW.rockets.filter(r=>{r.x+=r.vx; r.y+=r.vy; r.vy+=.12; ctx.fillStyle=r.c; ctx.beginPath(); ctx.arc(r.x,r.y,2.4,0,7); ctx.fill();
+    FW.rockets=FW.rockets.filter(r=>{r.x+=r.vx*k; r.y+=r.vy*k; r.vy+=.12*k; ctx.fillStyle=r.c; ctx.beginPath(); ctx.arc(r.x,r.y,2.4,0,7); ctx.fill();
       if(r.y<=r.tx||r.vy>=0){burst(r.x,r.y,r.c); return false} return true});
-    FW.parts=FW.parts.filter(p=>{p.x+=p.vx; p.y+=p.vy; p.vx*=.985; p.vy=p.vy*.985+.05; p.life-=p.dec; if(p.life<=0) return false;
+    FW.parts=FW.parts.filter(p=>{p.x+=p.vx*k; p.y+=p.vy*k; p.vx*=Math.pow(.985,k); p.vy=p.vy*Math.pow(.985,k)+.05*k; p.life-=p.dec*k; if(p.life<=0) return false;
       ctx.globalAlpha=Math.max(0,p.life); ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,7); ctx.fill(); ctx.globalAlpha=1; return true});
     if(el>9000&&!FW.rockets.length&&!FW.parts.length){stopFireworks(true); return}
     FW.raf=requestAnimationFrame(step);
