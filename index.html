@@ -397,6 +397,11 @@ textarea{min-height:4.5em;resize:vertical}
 .setup .gplan{font-size:.92rem;line-height:1.4}
 .setup .gchal{padding:9px 14px}
 @media (max-height:800px){.setup>.panel{gap:12px;padding-block:18px}.setup .g{padding:12px;gap:8px}.setup .ga{min-height:40px}}
+.fwcanvas{position:fixed;inset:0;width:100%;height:100%;z-index:60;pointer-events:none}
+.congrats{font-weight:900;text-transform:uppercase;font-size:clamp(1.6rem,4vw,3rem);letter-spacing:.06em;background:linear-gradient(90deg,#ffd36b,#ff8a9a,#c6ef3a,#9b7bff,#ffd36b);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3s linear infinite}
+@keyframes shine{to{background-position:200% 0}}
+.winner .crown{animation:crownpop .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes crownpop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
 </style>
 
 </head>
@@ -711,6 +716,7 @@ function render(){
   } else if(G.phase==='qualify') h+=qualifyHTML(G);
   else h+=doneHTML(G);
   app.innerHTML=h;
+  if(G.phase==='done'&&G.winner!=null){ if(!FW.on) fireworks() } else stopFireworks();
   startIdle();
   renderModal();
 }
@@ -880,6 +886,37 @@ function qualifyHTML(G){
   ${host?'<div class="acts"><button class="btn primary" data-act="startfinal">Шийдвэрлэх тойрог эхлүүлэх</button></div>':''}</section>`;
 }
 
+/* ---- fireworks ---- */
+const FW={on:false,raf:0,cv:null,parts:[],rockets:[],t0:0,last:0};
+function fireworks(){
+  stopFireworks();
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv=document.createElement('canvas'); cv.className='fwcanvas'; document.body.appendChild(cv);
+  const ctx=cv.getContext('2d'); FW.cv=cv; FW.on=true; FW.parts=[]; FW.rockets=[]; FW.t0=performance.now(); FW.last=0;
+  const fit=()=>{const r=devicePixelRatio||1; cv.width=innerWidth*r; cv.height=innerHeight*r; ctx.setTransform(r,0,0,r,0,0)}; fit(); FW.fit=fit; addEventListener('resize',fit);
+  const COLS=['#ff4a5f','#f2a7b4','#ffd36b','#c6ef3a','#9b7bff','#6fc8ff','#ffffff','#ff8a3d'];
+  const launch=()=>{const x=innerWidth*(.15+Math.random()*.7); FW.rockets.push({x,y:innerHeight,vx:(Math.random()-.5)*1.5,vy:-(9+Math.random()*4),tx:innerHeight*(.12+Math.random()*.35),c:COLS[Math.floor(Math.random()*COLS.length)]}); pop(.04)};
+  const burst=(x,y,c)=>{const n=70+Math.floor(Math.random()*50), c2=COLS[Math.floor(Math.random()*COLS.length)];
+    for(let i=0;i<n;i++){const a=Math.PI*2*i/n, sp=2+Math.random()*4.5; FW.parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,dec:.008+Math.random()*.01,c:Math.random()<.7?c:c2,s:1.6+Math.random()*1.6})}
+    pop(.12)};
+  const step=now=>{
+    if(!FW.on) return;
+    const el=now-FW.t0;
+    if(el<9000&&now-FW.last>(el<1500?220:420)){FW.last=now; launch(); if(Math.random()<.35) launch()}
+    ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='rgba(0,0,0,.22)'; ctx.fillRect(0,0,innerWidth,innerHeight);
+    ctx.globalCompositeOperation='lighter';
+    FW.rockets=FW.rockets.filter(r=>{r.x+=r.vx; r.y+=r.vy; r.vy+=.12; ctx.fillStyle=r.c; ctx.beginPath(); ctx.arc(r.x,r.y,2.4,0,7); ctx.fill();
+      if(r.y<=r.tx||r.vy>=0){burst(r.x,r.y,r.c); return false} return true});
+    FW.parts=FW.parts.filter(p=>{p.x+=p.vx; p.y+=p.vy; p.vx*=.985; p.vy=p.vy*.985+.05; p.life-=p.dec; if(p.life<=0) return false;
+      ctx.globalAlpha=Math.max(0,p.life); ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,7); ctx.fill(); ctx.globalAlpha=1; return true});
+    if(el>9000&&!FW.rockets.length&&!FW.parts.length){stopFireworks(true); return}
+    FW.raf=requestAnimationFrame(step);
+  };
+  FW.raf=requestAnimationFrame(step);
+}
+function stopFireworks(keepFlag){cancelAnimationFrame(FW.raf); if(FW.cv){FW.cv.remove(); FW.cv=null} if(FW.fit) removeEventListener('resize',FW.fit); FW.on=!!keepFlag&&FW.on; if(keepFlag) FW.on=true}
+function pop(vol){try{ACTX=ACTX||new (window.AudioContext||window.webkitAudioContext)(); const len=ACTX.sampleRate*.35, buf=ACTX.createBuffer(1,len,ACTX.sampleRate), d=buf.getChannelData(0); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+  const src=ACTX.createBufferSource(), g=ACTX.createGain(), f=ACTX.createBiquadFilter(); f.type='lowpass'; f.frequency.value=vol>.1?1400:3000; g.gain.value=vol; src.buffer=buf; src.connect(f).connect(g).connect(ACTX.destination); src.start()}catch(e){}}
 function doneHTML(G){
   const all=G.teams.map((_,i)=>i).sort((a,b)=>G.teams[b].main-G.teams[a].main||G.teams[b].final-G.teams[a].final||a-b);
   const fin=G.finalists&&G.finalists.length>1;
@@ -887,7 +924,7 @@ function doneHTML(G){
   const head=G.winner!=null
     ?`<div class="crown gold">${esc(G.teams[G.winner].name)}</div><span class="muted">Үндсэн тойрогт ${G.teams[G.winner].main} оноо${fin?` · Шийдвэрлэх тойрогт ${G.teams[G.winner].final} оноо`:''}</span>`
     :`<div class="crown gold">${co.map(i=>esc(G.teams[i].name)).join(' · ')}</div><span class="muted">Асуулт дуусах хүртэл тэнцсэн хэвээр байна. Хөтлөгч нэмэлт асуултаар шийднэ.</span>`;
-  return `<section class="panel winner"><span class="chip">Хэллоуины аварга</span>${head}</section>
+  return `<section class="panel winner">${G.winner!=null?'<div class="congrats">Баяр хүргэе!</div>':''}<span class="chip">Хэллоуины аварга</span>${head}${G.winner!=null?'<button class="btn small" data-act="fireworks">🎆 Дахин салют буудуулах</button>':''}</section>
    <section class="scores"><h2 class="gold">Эцсийн дүн</h2>${all.map((i,k)=>`<div class="row ${i===G.winner?'cur lead':''}"><span class="rk">${k+1}</span><span class="nm">${esc(G.teams[i].name)}${fin&&G.finalists.includes(i)?`<small>Шийдвэрлэх тойрог: ${G.teams[i].final}</small>`:''}</span><span class="sc">${G.teams[i].main}</span></div>`).join('')}</section>`;
 }
 
@@ -1121,6 +1158,7 @@ document.addEventListener('click',e=>{
   switch(a){
     case 'start': if(spinning) break; S.phase='main'; S.ptr=0; persist(); render(); break;
     case 'spin': spin(); break;
+    case 'fireworks': FW.on=false; fireworks(); break;
     case 'tstart': tStart(); break;
     case 'tpause': tPause(); break;
     case 'treset': tReset(); break;
