@@ -465,7 +465,7 @@ const DEFAULT_Q={
    3:Q('Halloween аймшгийн киноны цувралын алдарт масктай алуурчны нэр хэн бэ?',['Michael Myers'],0,'',{note:'Challenge: Багийн гишүүд хоорондоо юм ярьж болохгүй'}),
    4:Q('"Joker" (2019) кинонд Joker-ийн бүжиглэн бууж буй алдарт шат аль хотод байдаг вэ?',['Нью-Йорк (Бронкс)'],0),
    5:Q('"Shrek" киноны анхны (англи) хувилбарт Шрекийн дуу хоолойг хэн хийсэн бэ?',['Майк Майерс'],0,'',{note:'Challenge: 2 shot tequila'})}},
-  {name:'Согтуу караоке',qs:{
+  {name:'Согтуу караоке',music:true,qs:{
    2:Q('Клипэндээ зомбинуудтай бүжиглэдэг "Thriller" дууг хэн дуулсан бэ?',['Майкл Жексон','Мадонна','Принс','Элвис Пресли'],0),
    3:Q('"Bohemian Rhapsody" дууг аль хамтлаг дуулсан бэ?',['Queen'],0,'',{open:true}),
    4:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Винсент Прайс'],0,'',{open:true,note:'Challenge: 1 shot tequila'}),
@@ -528,7 +528,8 @@ try{if(!localStorage.getItem('hw-names-fun')){const RN={"Halloween-ы тухай
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila-тай асуулт') q.note='+1 tequila shot-тай асуулт'})));
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila shot-тай асуулт') q.note='Challenge: 1 shot tequila'})));
 if((S.qv||0)<QV){const OLD={};(S.questions.main||[]).forEach(c=>OLD[c.name]=c);const NB=clone(DEFAULT_Q.main);NB.forEach(c=>{const o=OLD[c.name];if(o)[2,3,4,5].forEach(v=>{const a=o.qs&&o.qs[v];if(a)['img','vid','aud','link'].forEach(k=>{if(a[k])c.qs[v][k]=a[k]})})});S.questions.main=NB;S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-try{if(!localStorage.getItem('hw-karaoke-open')){const kc=S.questions.main.find(c=>c.name==='Согтуу караоке')||S.questions.main.find(c=>c.qs&&c.qs[2]&&/Thriller/.test(c.qs[2].q||''));if(kc)[3,4,5].forEach(v=>{const q=kc.qs[v];if(q&&!q.open){const cv=q.a[q.c]||q.a[0]||'';q.a=[cv];q.c=0;q.open=true}});localStorage.setItem('hw-karaoke-open','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
+try{const kc=S.questions.main.find(c=>c.name==='Согтуу караоке')||S.questions.main.find(c=>c.qs&&c.qs[2]&&/Thriller/.test(c.qs[2].q||''));if(kc&&!kc.music){kc.music=true;localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
+try{if(!localStorage.getItem('hw-karaoke-open')){const kc=S.questions.main.find(c=>c.name==='Согтуу караоке')||S.questions.main.find(c=>c.qs&&c.qs[2]&&/Thriller/.test(c.qs[2].q||''));if(kc) kc.music=true;if(kc)[3,4,5].forEach(v=>{const q=kc.qs[v];if(q&&!q.open){const cv=q.a[q.c]||q.a[0]||'';q.a=[cv];q.c=0;q.open=true}});localStorage.setItem('hw-karaoke-open','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 try{if(!localStorage.getItem('hw-animals-in')){const q=S.questions.main,ai=q.findIndex(c=>c.name==='Согтуу амьтны хүрээлэн'),si=q.findIndex(c=>c.name==='Нүднээс од харвалаа');if(ai>-1&&si>-1&&ai>si){const [c]=q.splice(ai,1);q.splice(si,0,c)}localStorage.setItem('hw-animals-in','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 try{if(!localStorage.getItem('hw-names-v2')){if(S.phase==='setup'){S.teams=DEFAULT_NAMES.map(n=>({name:n,main:0,final:0}));S.order=null;localStorage.setItem(KEY,JSON.stringify(S))} localStorage.setItem('hw-names-v2','1')}}catch(e){}
 const ROLE='host'; let entered=S.phase!=='setup';
@@ -1001,7 +1002,7 @@ function renderModal(){
    <div class="qhead"><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><span class="meta">${esc(c.icon||'')} ${esc(c.name)} · ${L.v} оноо</span><span class="team"><span class="tlab">Хариулах баг:</span> <span class="gold">${esc(t.name)}</span></span></div>
    <div class="qright">${mediaOnly||rev?'':timerHTML()}</div></div>
    ${mediaOnly?`<div class="qbody media-first">${vis}</div>`:`<div class="qbody ${vis?'has-vis':''}"><div class="qcol"><p class="qtext">${esc(it.q)}</p>${it.note?`<span class="qnote">${esc(it.note)}</span>`:''}</div>${vis}</div>`}
-   ${link?`<div class="vislink"><a class="btn small" href="${esc(link)}" target="_blank" rel="noopener">Киноны хэсгийг нээх ↗</a></div>`:''}
+   ${link?`<div class="vislink"><a class="btn small" href="${esc(link)}" target="_blank" rel="noopener">${(c.music||c.name==='Согтуу караоке')?'Дууны хэсгийг нээх':'Киноны хэсгийг нээх'} ↗</a></div>`:''}
    ${open?'':`<div class="answers a${n}">`}`;
   if(open){
     if(!mediaOnly) h+=rev?`<div class="openans ${L.ok?'ok':'no'}"><span class="lbl2">Зөв хариулт</span><b>${esc(it.a[0])}</b></div>`:`<div class="openans wait"><span class="lbl2">Хариултын сонголт байхгүй</span><b>Баг хариултаа шууд хэлнэ</b><span class="beersall">${mugs(L.v)}</span></div>`;
