@@ -467,9 +467,9 @@ const DEFAULT_Q={
    5:Q('"Shrek" киноны анхны (англи) хувилбарт Шрекийн дуу хоолойг хэн хийсэн бэ?',['Майк Майерс'],0,'',{note:'Challenge: 2 shot tequila'})}},
   {name:'Согтуу караоке',qs:{
    2:Q('Клипэндээ зомбинуудтай бүжиглэдэг "Thriller" дууг хэн дуулсан бэ?',['Майкл Жексон','Мадонна','Принс','Элвис Пресли'],0),
-   3:Q('"Bohemian Rhapsody" дууг аль хамтлаг дуулсан бэ?',['The Beatles','Queen','Led Zeppelin'],1),
-   4:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Борис Карлофф','Кристофер Ли','Винсент Прайс'],2,'',{note:'Challenge: 1 shot tequila'}),
-   5:Q('Хэллоуины сонгодог "Monster Mash" (1962) дууг хэн дуулсан бэ?',['Alice Cooper','Bobby "Boris" Pickett'],1,'',{note:'Challenge: 2 shot tequila'})}},
+   3:Q('"Bohemian Rhapsody" дууг аль хамтлаг дуулсан бэ?',['Queen'],0,'',{open:true}),
+   4:Q('"Thriller" дууны төгсгөлд аймшигт уншлага хийсэн аймшгийн киноны жүжигчин хэн бэ?',['Винсент Прайс'],0,'',{open:true,note:'Challenge: 1 shot tequila'}),
+   5:Q('Хэллоуины сонгодог "Monster Mash" (1962) дууг хэн дуулсан бэ?',['Bobby "Boris" Pickett'],0,'',{open:true,note:'Challenge: 2 shot tequila'})}},
   {name:'Хаана байнаа би?',qs:{
    2:Q('Дэлхийн хамгийн том далай аль вэ?',['Атлантын далай','Энэтхэгийн далай','Номхон далай','Хойд мөсөн далай'],2),
    3:Q('Дэлхийн хамгийн гүн далайн цэг аль вэ?',['Тонгагийн хонхор','Challenger Deep','Японы хонхор'],1),
@@ -528,6 +528,7 @@ try{if(!localStorage.getItem('hw-names-fun')){const RN={"Halloween-ы тухай
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila-тай асуулт') q.note='+1 tequila shot-тай асуулт'})));
 ['main','final'].forEach(r=>S.questions[r].forEach(c=>Object.values(c.qs).forEach(q=>{if(q&&q.note==='+1 tequila shot-тай асуулт') q.note='Challenge: 1 shot tequila'})));
 if((S.qv||0)<QV){const OLD={};(S.questions.main||[]).forEach(c=>OLD[c.name]=c);const NB=clone(DEFAULT_Q.main);NB.forEach(c=>{const o=OLD[c.name];if(o)[2,3,4,5].forEach(v=>{const a=o.qs&&o.qs[v];if(a)['img','vid','aud','link'].forEach(k=>{if(a[k])c.qs[v][k]=a[k]})})});S.questions.main=NB;S.qv=QV;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+try{if(!localStorage.getItem('hw-karaoke-open')){const kc=S.questions.main.find(c=>c.name==='Согтуу караоке')||S.questions.main.find(c=>c.qs&&c.qs[2]&&/Thriller/.test(c.qs[2].q||''));if(kc)[3,4,5].forEach(v=>{const q=kc.qs[v];if(q&&!q.open){const cv=q.a[q.c]||q.a[0]||'';q.a=[cv];q.c=0;q.open=true}});localStorage.setItem('hw-karaoke-open','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 try{if(!localStorage.getItem('hw-animals-in')){const q=S.questions.main,ai=q.findIndex(c=>c.name==='Согтуу амьтны хүрээлэн'),si=q.findIndex(c=>c.name==='Нүднээс од харвалаа');if(ai>-1&&si>-1&&ai>si){const [c]=q.splice(ai,1);q.splice(si,0,c)}localStorage.setItem('hw-animals-in','1');localStorage.setItem(KEY,JSON.stringify(S))}}catch(e){}
 try{if(!localStorage.getItem('hw-names-v2')){if(S.phase==='setup'){S.teams=DEFAULT_NAMES.map(n=>({name:n,main:0,final:0}));S.order=null;localStorage.setItem(KEY,JSON.stringify(S))} localStorage.setItem('hw-names-v2','1')}}catch(e){}
 const ROLE='host'; let entered=S.phase!=='setup';
@@ -569,7 +570,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const mug='<svg><use href="#mug"/></svg>';
 const mugs=n=>Array.from({length:n},()=>mug).join('');
 const nAns=v=>v===5?2:v===2?4:3;
-const isOpen=(G,r,ci)=>!!(G.questions[r][ci]&&G.questions[r][ci].open);
+const isOpen=(G,r,ci,v)=>{const c=G.questions[r][ci]; if(!c) return false; const q=v&&c.qs[v]; return q&&q.open!==undefined?!!q.open:!!c.open};
 const hasMedia=it=>!!(it&&(it.vid||it.aud||it.img));
 const gv=ci=>{const g=GRAD[ci%GRAD.length];return `--c1:${g[0]};--c2:${g[1]}`};
 const round=G=>G.phase==='final'?'final':'main';
@@ -602,7 +603,7 @@ function rulesHTML(G){
   </div>
   <div class="gchal"><div class="gchal-ic">${mugs(3)}${SHOT}</div><div><b>Зарим асуултад нэмэлт challenge орсон байна</b><span>Жишээлбэл 4 онооны асуулт сонговол 4 ундааны 3 нь шар айраг, 1 нь tequila shot, эсвэл 2 нь шар айраг, 2 нь tequila shot байж болно. Shot нь шар айрагны тоондоо багтана.</span></div></div>
   <p class="gplan"><b>${n} баг</b> → <b>${mc} ангилал × 4 = ${mq} асуулт</b>, баг бүр <b>${mq/n} удаа</b> гарна · Хамгийн өндөр оноотой <b>1 баг ялна</b> · Тэнцвэл тэнцсэн багууд шийдвэрлэх тойрог тоглоно.</p>
-  <p class="gplan">⏱ Хариулах хугацаа <b>20 секунд</b> · <b>${G.questions.main.filter((c,i)=>c.open&&i<mc).map(c=>esc(c.name)).join(', ')||'Зарим'}</b> ангилалд сонголт байхгүй: эхлээд бичлэг үзээд асуулт гарч, баг шууд хариулна. Зөв бол бүх шар айраг оноо болно, буруу бол бүгдийг ууна.</p>`;
+  <p class="gplan">⏱ Хариулах хугацаа <b>20 секунд</b> · <b>${G.questions.main.filter((c,i)=>i<mc&&(c.open||Object.values(c.qs).some(q=>q&&q.open))).map(c=>esc(c.name)+(c.open?'':' (3–5 оноо)')).join(', ')||'Зарим'}</b> ангилалд сонголт байхгүй: эхлээд бичлэг үзээд асуулт гарч, баг шууд хариулна. Зөв бол бүх шар айраг оноо болно, буруу бол бүгдийг ууна.</p>`;
 }
 
 /* ================= screens ================= */
@@ -1034,7 +1035,7 @@ function renderModal(){
   if(oldVis&&newVis&&oldVis.dataset.key===newVis.dataset.key) newVis.replaceWith(oldVis); else hydrateMedia(root);
 }
 function openQ(ci,v){
-  const r=round(S), it=S.questions[r][ci].qs[v], open=isOpen(S,r,ci);
+  const r=round(S), it=S.questions[r][ci].qs[v], open=isOpen(S,r,ci,v);
   S.live={r,ci,v,team:cur(S),alloc:Array(open?1:nAns(v)).fill(0),stage:open?(hasMedia(it)?'media':'ask'):'place',open};
   tReset(); persist(); render();
 }
@@ -1061,7 +1062,7 @@ function commit(){
 }
 
 /* ================= editor ================= */
-function openEdit(ci,v){const r=round(S);const c=S.questions[r][ci];E={r,ci,v,open:!!c.open,name:c.name,icon:c.icon||'',...clone(c.qs[v]),busy:false,msg:''};render()}
+function openEdit(ci,v){const r=round(S);const c=S.questions[r][ci];E={r,ci,v,open:isOpen(S,r,ci,v),name:c.name,icon:c.icon||'',...clone(c.qs[v]),busy:false,msg:''};render()}
 function readEditor(){
   if(!E) return; const g=id=>document.getElementById(id);
   if(g('e-name')) E.name=g('e-name').value; if(g('e-icon')) E.icon=g('e-icon').value;
@@ -1099,7 +1100,7 @@ function editorHTML(){
     <label class="f">Тайлбар (хариу нээгдэхэд харагдана)<input type="text" id="e-expl" value="${esc(E.expl||'')}"></label></div>
    <label class="f">Эможи зураг (видео, зураг байхгүй үед харагдана)<input type="text" id="e-pic" value="${esc(E.pic||'')}" placeholder="жишээ нь 🦈🏖️🚤"></label>
    ${E.busy||E.msg?`<p class="note" role="status">${E.busy?'Файлыг хадгалж байна…':esc(E.msg)}</p>`:''}
-   <label class="f" style="flex-direction:row;align-items:center;gap:8px;color:var(--bone)"><input type="checkbox" id="e-open" ${E.open?'checked':''}> Энэ ангилал хариултын сонголтгүй (бичлэг → асуулт → баг шууд хариулна)</label>
+   <label class="f" style="flex-direction:row;align-items:center;gap:8px;color:var(--bone)"><input type="checkbox" id="e-open" ${E.open?'checked':''}> Энэ асуулт хариултын сонголтгүй (бичлэг → асуулт → баг шууд хариулна)</label>
    ${E.open?`<label class="f">Зөв хариулт<input type="text" id="e-a0" value="${esc(E.a[0]||'')}"></label>`:`<div class="f" style="gap:8px"><span>Хариултууд (зөвийг нь сонгоно)</span>
    ${Array.from({length:n},(_,i)=>`<div class="edit-ans"><input type="radio" name="e-c" id="e-c${i}" value="${i}" ${E.c===i?'checked':''} aria-label="Зөв хариулт ${LET[i]}"><input type="text" id="e-a${i}" value="${esc(E.a[i]||'')}" placeholder="${LET[i]} хариулт"></div>`).join('')}</div>`}
    <div class="qfoot"><button class="btn small" data-act="edefault">Анхны асуултаар сэргээх</button>
@@ -1108,9 +1109,9 @@ function editorHTML(){
 }
 function saveEdit(){
   readEditor();
-  const n=eCount(), c=S.questions[E.r][E.ci]; c.open=!!E.open; if(E.open) E.c=0;
+  const n=eCount(), c=S.questions[E.r][E.ci]; if(E.open) E.c=0;
   c.name=E.name.trim()||c.name; c.icon=E.icon.trim();
-  const q={q:E.q.trim()||'—',a:Array.from({length:n},(_,i)=>(E.a[i]||'').trim()||'—'),c:E.c||0,pic:(E.pic||'').trim()};
+  const q={q:E.q.trim()||'—',a:Array.from({length:n},(_,i)=>(E.a[i]||'').trim()||'—'),c:E.c||0,pic:(E.pic||'').trim(),open:!!E.open};
   if(E.img) q.img=E.img; if(E.vid) q.vid=E.vid; if(E.aud) q.aud=E.aud; if((E.note||'').trim()) q.note=E.note.trim(); if((E.expl||'').trim()) q.expl=E.expl.trim();
   const lk=safeUrl((E.link||'').trim()); if(lk) q.link=lk;
   c.qs[E.v]=q; const r=E.r; E=null; persist(r); render();
