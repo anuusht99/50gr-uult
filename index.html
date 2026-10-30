@@ -999,7 +999,7 @@ function renderModal(){
   const vis=visHTML(it), link=safeUrl(it.link), open=!!L.open, mediaOnly=open&&L.stage==='media';
   let h=`<div class="overlay" role="dialog" aria-modal="true" style="${gv(L.ci)}"><div class="dlg">
    <div class="qhead"><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><span class="meta">${esc(c.icon||'')} ${esc(c.name)} · ${L.v} оноо</span><span class="team"><span class="tlab">Хариулах баг:</span> <span class="gold">${esc(t.name)}</span></span></div>
-   <div class="qright">${mediaOnly||rev?'':timerHTML()}<div class="beers" aria-label="${L.v} шар айраг">${mugs(L.v)}</div></div></div>
+   <div class="qright">${mediaOnly||rev?'':timerHTML()}</div></div>
    ${mediaOnly?`<div class="qbody media-first">${vis}</div>`:`<div class="qbody ${vis?'has-vis':''}"><div class="qcol"><p class="qtext">${esc(it.q)}</p>${it.note?`<span class="qnote">${esc(it.note)}</span>`:''}</div>${vis}</div>`}
    ${link?`<div class="vislink"><a class="btn small" href="${esc(link)}" target="_blank" rel="noopener">Киноны хэсгийг нээх ↗</a></div>`:''}
    ${open?'':`<div class="answers a${n}">`}`;
